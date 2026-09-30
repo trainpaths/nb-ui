@@ -13,16 +13,16 @@
 		".": "./index.ts",
 		"./theme.css": "./theme.css",
 		"./vite": {
-			"types": "./vite.d.ts",
-			"default": "./vite.js"
+			"types": "./vite-plugin.d.ts",
+			"default": "./vite-plugin.js"
 		},
 		"./src/*": "./src/*"
 	},
 	"files": [
 		"index.ts",
 		"theme.css",
-		"vite.js",
-		"vite.d.ts",
+		"vite-plugin.js",
+		"vite-plugin.d.ts",
 		"src"
 	],
 	"scripts": {
