@@ -51,6 +51,9 @@ Update: bump the tag (`pnpm add github:trainpaths/nb-ui#v0.2.0`).
 
 Colour props (`bg`, `border`, `text` on `Button`, `Card`, `Input`, `Link`) take these token names.
 
+> **Font:** `theme.css` sets `--font-sans` to Roboto, self-hosted via `@fontsource-variable/roboto` (the woff2
+> files are bundled by your Vite build, so a `font-src 'self'` CSP works). Override `--font-sans` in your `@theme` to change it.
+
 > **Note:** `theme.css` sets `--spacing: 1px`, so every Tailwind spacing utility in your app is in px
 > (`p-16` = 16px). The components are written that way.
 

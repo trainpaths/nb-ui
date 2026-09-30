@@ -4,7 +4,7 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 **No build step**: raw `.vue`/`.ts` is shipped, the consuming app's Vite compiles it.
 
 - `src/` components + composables; `index.ts` barrel (every public export goes here)
-- `theme.css` colour tokens + `--spacing: 1px` + `@source './src'` (Tailwind skips node_modules otherwise) + an
+- `theme.css` imports self-hosted Roboto (`@fontsource-variable/roboto`, a real dependency) + `--font-sans` + colour tokens + `--spacing: 1px` + `@source './src'` (Tailwind skips node_modules otherwise) + an
   `@source inline` safelist for classes built at runtime (`colors.ts`: `bg-${name}` etc.). New token → add to both.
 - `vite-plugin.js` (+ hand-written `.d.ts`; exported as `./vite`; not named `vite.js`: Windows would run it for `vite`) override plugin: an import of `*.vue` from inside this package resolves to
   the app's `src/lib/nbUI/<basename>` if it exists. Plain JS on purpose: Node won't strip types in node_modules and

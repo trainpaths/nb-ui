@@ -3,6 +3,9 @@
  * Override any token in your own `@theme { ... }` below the import.
  */
 
+/* self-hosted Roboto (apps' CSP: font-src 'self'), bundled by the app's Vite */
+@import '@fontsource-variable/roboto';
+
 /* scan the components (Tailwind skips node_modules unless told) */
 @source './src';
 
@@ -13,7 +16,7 @@
 	/* components are written in px units: p-16 → 16px. Applies to the whole app. */
 	--spacing: 1px;
 
-	--font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+	--font-sans: 'Roboto Variable', -apple-system, BlinkMacSystemFont, sans-serif;
 
 	--color-primary: #744997;
 	--color-primary-dark: #5d3a79;
