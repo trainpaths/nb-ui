@@ -90,4 +90,17 @@ component, and export the component from `index.ts`.
 
 To try changes in an app before tagging: `pnpm link ../nb-ui` in the app, `pnpm unlink` afterwards.
 
-Release: bump `version` in `package.json`, commit, `git tag vX.Y.Z && git push --tags`.
+### Releases
+
+Automatic: every push to `main` runs `.github/workflows/release.yml` (typecheck + build, then bump
+`package.json`, tag `vX.Y.Z`, GitHub release). The bump comes from the Conventional Commits since the last tag:
+
+| Commits contain | Bump |
+|---|---|
+| `feat!:` / `fix(ui)!:` (any type with `!`) or a `BREAKING CHANGE:` footer | major |
+| `feat:` | minor |
+| anything else (`fix:`, `refactor:`, non-conventional messages, ...) | patch |
+| only `docs` / `chore` / `ci` / `test` / `style` / `build` | no release |
+
+Force a bump: Actions → Release → Run workflow → `patch` / `minor` / `major`.
+Pull `main` after a push: the workflow adds a `chore(release)` commit.

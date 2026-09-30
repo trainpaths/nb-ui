@@ -12,4 +12,7 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 - `playground/` dev-only showcase (`pnpm dev`): `demos/<Name>.vue` auto-globbed into sections, `Variant.vue` rows,
   theme colour pickers set CSS vars on `<html>`. Memory router so `Link to=` works and `#anchors` stay free.
 - Style: tabs, `<script setup lang="ts">`, spacing utilities are px (`p-16`), colours via theme token names.
-- Release: bump `package.json` version, tag `vX.Y.Z`, push tags; apps bump the tag in their dependency.
+- Release: automatic on push to `main` (`.github/workflows/release.yml`): Conventional Commits since last tag → bump
+  (`!`/`BREAKING CHANGE` major, `feat` minor, else patch; docs/chore/ci/test/style/build only → none), commits
+  `chore(release): vX.Y.Z`, tags, GitHub release. Manual run can force the bump. Always `git pull` after pushing.
+  Apps then bump the tag in their dependency.
