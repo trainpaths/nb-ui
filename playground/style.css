@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import '../theme.css';
+
+@source './';
+
+@layer base {
+	body {
+		margin: 0;
+		@apply bg-gray-50 font-sans text-black antialiased;
+	}
+}
