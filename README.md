@@ -3,9 +3,15 @@
 Vue 3 + Tailwind CSS v4 UI components, shipped as **source** (no build step): your app's Vite compiles them.
 Any component can be overridden by dropping a file with the same name into your project.
 
-Components: `Alert`, `Button`, `Card`, `DescriptionList`, `DescriptionItem`, `Form`, `FormField`, `Input`, `Link`,
-`Loading`, `TagInput`, `Toast`, `ToastContainer`, `UnsavedChangesDialog`; composables `useToast()`,
-`useUnsavedChanges()`.
+| Group | Components |
+|---|---|
+| Actions & text | `Button`, `Link`, `Icon`, `CloseButton` |
+| Forms | `Form`, `FormField`, `Input`, `Select`, `Textarea`, `Checkbox`, `Switch`, `RadioGroup`, `TagInput` |
+| Overlays | `Modal`, `ConfirmDialog` + `useConfirm()`, `UnsavedChangesDialog` + `useUnsavedChanges()`, `Dropdown`, `Tooltip` |
+| Feedback | `Alert`, `Toast`, `ToastContainer` + `useToast()`, `Spinner`, `Loading`, `Skeleton`, `ProgressBar` |
+| Display & navigation | `Card`, `Badge`, `Avatar`, `Tabs`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
+
+Run `pnpm dev` for a playground with every component and its props.
 
 ## Install
 
@@ -35,12 +41,39 @@ export default defineConfig({
 import { Button, useToast } from '@trainpaths/nb-ui'
 ```
 
+Mount the global hosts once (e.g. in `App.vue`) to use `useToast()` and `useConfirm()`:
+
+```vue
+<ToastContainer />
+<ConfirmDialog />
+```
+
+```ts
+const { toast } = useToast()
+toast.success('Saved') // also .error / .warning / .info, or toast({ message, type, duration })
+
+const { confirm } = useConfirm()
+if (await confirm({ title: 'Delete page?', confirmText: 'Delete', danger: true })) remove()
+```
+
 Update: bump the tag (`pnpm add github:trainpaths/nb-ui#v0.2.0`).
 
 ## Theming
 
-`theme.css` defines the colour tokens (`--color-primary`, `-primary-dark`, `-secondary`, `-accent`, `-danger`,
-`-success`, `-warning`, `-error`, `-white`, `-black`). Redefine any of them after the import:
+`theme.css` defines the colour tokens. Redefine any of them after the import:
+
+| Token | Default | Used for |
+|---|---|---|
+| `primary` / `primary-dark` | `#6A428A` / `#54356E` | brand fills (`bg="primary"`), its hover |
+| `secondary` | `#4A4D50` | neutral fills |
+| `accent` | `#86BBBD` | default `Button` fill, tints (alerts, badges, hover), info toast |
+| `accent-dark` | `#3A7679` | accent-coloured **text** (`Link`, outline/ghost buttons), focus rings, accent hover |
+| `danger`, `error`, `success`, `warning` | | states |
+| `white`, `black` | `#F4F5F6`, `#131B23` | surfaces, text |
+
+`accent` is a light colour (~2:1 on white), so components never put text *in* accent: links and outline buttons use
+`accent-dark` (≥4.5:1 on `white`), and solid fills on light tokens (`accent`, `warning`, `white`) get black text
+automatically. Keep that relationship if you override them.
 
 ```css
 @theme {
@@ -49,7 +82,7 @@ Update: bump the tag (`pnpm add github:trainpaths/nb-ui#v0.2.0`).
 }
 ```
 
-Colour props (`bg`, `border`, `text` on `Button`, `Card`, `Input`, `Link`) take these token names.
+Colour props (`bg`, `border`, `text`, `color` on `Button`, `Card`, `Input`, `Link`, `Badge`, `Spinner`, …) take these token names.
 
 > **Font:** `theme.css` sets `--font-sans` to Roboto, self-hosted via `@fontsource-variable/roboto` (the woff2
 > files are bundled by your Vite build, so a `font-src 'self'` CSP works). Override `--font-sans` in your `@theme` to change it.
@@ -86,6 +119,7 @@ override's props compatible with the original.
 pnpm install
 pnpm dev         # playground: every component + live theme colour pickers
 pnpm typecheck
+pnpm test        # Vitest (happy-dom): composables + component behaviour
 ```
 
 Each `playground/demos/<Name>.vue` is one section of the playground (auto-discovered): add one for every new

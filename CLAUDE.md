@@ -5,10 +5,26 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 
 - `src/` components + composables; `index.ts` barrel (every public export goes here)
 - `theme.css` imports self-hosted Roboto (`@fontsource-variable/roboto`, a real dependency) + `--font-sans` + colour tokens + `--spacing: 1px` + `@source './src'` (Tailwind skips node_modules otherwise) + an
-  `@source inline` safelist for classes built at runtime (`colors.ts`: `bg-${name}` etc.). New token → add to both.
+  `@source inline` safelist for classes built at runtime (`bg-${name}`, `bg-${name}/20`, `hover:bg-${name}/10`…).
+  New token → add to the `@theme` block, every safelist line, and `tokens` in `playground/App.vue`.
 - `vite-plugin.js` (+ hand-written `.d.ts`; exported as `./vite`; not named `vite.js`: Windows would run it for `vite`) override plugin: an import of `*.vue` from inside this package resolves to
   the app's `src/lib/nbUI/<basename>` if it exists. Plain JS on purpose: Node won't strip types in node_modules and
   Vite's config loader externalizes deps. Also excludes the package from `optimizeDeps`.
+- Shared building blocks (reuse, don't re-roll): `styles.ts` (`focusRing`, `inputFocus` class strings), `colors.ts`
+  (`bgColor()`… + `onColor(bg)` = readable text token on a fill), `Icon.vue` (built-in inline SVG set, add paths there),
+  `CloseButton.vue`, `Spinner.vue`, `useField.ts` (`useField` wires a control to `FormField` via inject: id,
+  aria-invalid, aria-describedby; `useControlAttrs` + `inheritAttrs: false` sends non-class attrs to the native control
+  when the root is a wrapper div), `scrollLock.ts` (shared Modal counter).
+- Colour rule: `accent` is too light for text → text/rings/hover use `accent-dark`; light fills get black text (`onColor`).
+- Global hosts: `ToastContainer` (`useToast`) and `ConfirmDialog` (`useConfirm`) hold module-level state, mounted once by the app.
+- Overlays: `Modal` (Teleport, focus trap/restore, `inheritAttrs: false` → attrs on the panel); `UnsavedChangesDialog`
+  and `ConfirmDialog` are built on it. `Dropdown`/`Tooltip` position absolutely (no floating-ui): clipped by `overflow: hidden`.
+- Animations use Tailwind classes on `<Transition>`/`<TransitionGroup>` props, always with `motion-reduce:transition-none`.
+  Tailwind v4 `translate-*`/`scale-*` set the CSS `translate`/`scale` properties, not `transform`.
+- Tests: `tests/*.test.ts`, Vitest + @vue/test-utils + happy-dom (`vitest.config.ts`, separate from the playground's
+  `vite.config.ts`). CI runs typecheck → test → build.
+- Gotcha: after adding a new file in `src/`, restart `pnpm dev`; the running Tailwind plugin doesn't scan new files,
+  so their utilities are silently missing.
 - `playground/` dev-only showcase (`pnpm dev`): `demos/<Name>.vue` auto-globbed into sections, `Variant.vue` rows,
   theme colour pickers set CSS vars on `<html>`. Memory router so `Link to=` works and `#anchors` stay free.
 - Style: tabs, `<script setup lang="ts">`, spacing utilities are px (`p-16`), colours via theme token names.
