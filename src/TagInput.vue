@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import CloseButton from './CloseButton.vue'
 
 /**
  * Chips + text input for a list of single-word tags. Enter, comma and Space add (the highlighted suggestion or
@@ -111,24 +112,22 @@ function onBlur() {
 		:data-testid="testId"
 	>
 		<div
-			class="flex min-h-32 cursor-text flex-wrap items-center gap-4 rounded border border-gray-300 bg-white px-6 py-4 focus-within:border-primary"
+			class="flex min-h-32 cursor-text flex-wrap items-center gap-4 rounded border border-gray-300 bg-white px-6 py-4 focus-within:border-accent-dark focus-within:ring-1 focus-within:ring-accent-dark"
 			@click="input?.focus()"
 		>
 			<span
 				v-for="tag in modelValue"
 				:key="tag"
-				class="inline-flex items-center gap-2 rounded-full bg-primary/10 py-2 pl-8 pr-4 text-xs text-primary"
+				class="inline-flex items-center gap-2 rounded-full bg-accent/20 py-2 pl-8 pr-4 text-xs text-black"
 				data-testid="tag-chip"
 			>
 				{{ tag }}
-				<button
-					type="button"
-					class="cursor-pointer rounded-full border-none bg-transparent px-2 leading-none text-primary/70 hover:text-primary"
-					:aria-label="`Remove tag ${tag}`"
+				<CloseButton
+					:size="12"
+					:label="`Remove tag ${tag}`"
+					class="rounded-full"
 					@click.stop="remove(tag)"
-				>
-					&#10005;
-				</button>
+				/>
 			</span>
 			<input
 				ref="input"
@@ -162,7 +161,7 @@ function onBlur() {
 				role="option"
 				:aria-selected="index === highlighted"
 				class="cursor-pointer rounded px-8 py-4 text-sm"
-				:class="index === highlighted ? 'bg-primary/10 text-primary' : 'text-gray-700 hover:bg-gray-100'"
+				:class="index === highlighted ? 'bg-accent/20 text-black' : 'text-gray-700 hover:bg-gray-100'"
 				data-testid="tag-suggestion"
 				@mousedown.prevent="add(match)"
 			>
@@ -179,7 +178,7 @@ function onBlur() {
 				v-for="tag in popular"
 				:key="tag"
 				type="button"
-				class="cursor-pointer rounded-full border border-gray-200 bg-white px-8 py-1 text-xs text-gray-600 hover:border-primary hover:text-primary disabled:cursor-default disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400"
+				class="cursor-pointer rounded-full border border-gray-200 bg-white px-8 py-1 text-xs text-gray-600 hover:border-accent-dark hover:text-accent-dark disabled:cursor-default disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400"
 				:disabled="modelValue.includes(tag) || full"
 				@mousedown.prevent
 				@click="add(tag)"

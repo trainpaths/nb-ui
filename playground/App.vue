@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, type Component } from 'vue'
-import { ToastContainer } from '../index'
+import { ConfirmDialog, ToastContainer } from '../index'
 
 /** Every `demos/<Name>.vue` becomes a section + nav entry; add a file to showcase a new component. */
 const demos = Object.entries(import.meta.glob<{ default: Component }>('./demos/*.vue', { eager: true }))
 	.map(([path, mod]) => ({ name: path.slice('./demos/'.length, -'.vue'.length), component: mod.default }))
 	.sort((a, b) => a.name.localeCompare(b.name))
 
-const tokens = ['primary', 'primary-dark', 'secondary', 'accent', 'danger', 'success', 'warning', 'error', 'white', 'black']
+const tokens = ['primary', 'primary-dark', 'secondary', 'accent', 'accent-dark', 'danger', 'success', 'warning', 'error', 'white', 'black']
 const colors = ref<Record<string, string>>({})
 const defaults: Record<string, string> = {}
 
@@ -86,4 +86,5 @@ function resetColors() {
 		</main>
 	</div>
 	<ToastContainer />
+	<ConfirmDialog />
 </template>
