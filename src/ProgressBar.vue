@@ -19,17 +19,17 @@ const percent = computed(() => Math.min(100, Math.max(0, ((props.value ?? 0) / p
 		aria-valuemin="0"
 		:aria-valuemax="max"
 		:aria-valuenow="indeterminate ? undefined : value"
-		class="relative w-full overflow-hidden rounded-full bg-gray-200"
+		class="relative w-full overflow-hidden rounded-pill bg-gray-200"
 		:class="size === 'sm' ? 'h-4' : 'h-8'"
 	>
 		<div
 			v-if="indeterminate"
-			class="nb-progress-indeterminate absolute inset-y-0 w-1/3 rounded-full motion-reduce:animate-pulse"
+			class="nb-progress-indeterminate absolute inset-y-0 w-1/3 rounded-pill motion-reduce:animate-pulse"
 			:class="bgColor(color)"
 		/>
 		<div
 			v-else
-			class="h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none"
+			class="h-full rounded-pill transition-[width] duration-300 motion-reduce:transition-none"
 			:class="bgColor(color)"
 			:style="{ width: `${percent}%` }"
 		/>

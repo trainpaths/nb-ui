@@ -14,9 +14,31 @@
 @source inline('{,hover:}bg-{primary,primary-dark,secondary,accent,accent-dark,danger,success,warning,error,white,black}/{10,15,20}');
 @source inline('border-{primary,primary-dark,secondary,accent,accent-dark,danger,success,warning,error,white,black}/{30,40}');
 
+/*
+ * corner style: 1 = rounded, 0 = sharp. Set `:root { --nb-rounded: 0 }` in the app (or on any subtree).
+ * In a layer so an unlayered app override wins regardless of import order.
+ */
+@layer base {
+	:root {
+		--nb-rounded: 1;
+	}
+}
+
 @theme {
 	/* components are written in px units: p-16 → 16px. Applies to the whole app. */
 	--spacing: 1px;
+
+	/* Tailwind's radius scale × --nb-rounded. Bare `rounded`/`rounded-t`/`rounded-full` are fixed values: don't use them for corners */
+	--radius-xs: calc(0.125rem * var(--nb-rounded));
+	--radius-sm: calc(0.25rem * var(--nb-rounded));
+	--radius-md: calc(0.375rem * var(--nb-rounded));
+	--radius-lg: calc(0.5rem * var(--nb-rounded));
+	--radius-xl: calc(0.75rem * var(--nb-rounded));
+	--radius-2xl: calc(1rem * var(--nb-rounded));
+	--radius-3xl: calc(1.5rem * var(--nb-rounded));
+	--radius-4xl: calc(2rem * var(--nb-rounded));
+	/* pills (badge, switch, progress): square when sharp. True circles keep rounded-full. 9999px: infinity × 0 is NaN */
+	--radius-pill: calc(9999px * var(--nb-rounded));
 
 	--font-sans: 'Roboto Variable', -apple-system, BlinkMacSystemFont, sans-serif;
 

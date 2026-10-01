@@ -7,6 +7,9 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 - `theme.css` imports self-hosted Roboto (`@fontsource-variable/roboto`, a real dependency) + `--font-sans` + colour tokens + `--spacing: 1px` + `@source './src'` (Tailwind skips node_modules otherwise) + an
   `@source inline` safelist for classes built at runtime (`bg-${name}`, `bg-${name}/20`, `hover:bg-${name}/10`…).
   New token → add to the `@theme` block, every safelist line, and `tokens` in `playground/App.vue`.
+- Corners: `--nb-rounded` (1/0, in `@layer base`) multiplies the `--radius-*` scale in `theme.css`. Never use bare
+  `rounded`/`rounded-t`/`rounded-full` for corners (fixed values, ignore the toggle): `rounded-sm…lg`, `rounded-pill`
+  for pills; `rounded-full` only for true circles (radio, avatar, spinner, dots).
 - `vite-plugin.js` (+ hand-written `.d.ts`; exported as `./vite`; not named `vite.js`: Windows would run it for `vite`) override plugin: an import of `*.vue` from inside this package resolves to
   the app's `src/lib/nbUI/<basename>` if it exists. Plain JS on purpose: Node won't strip types in node_modules and
   Vite's config loader externalizes deps. Also excludes the package from `optimizeDeps`.

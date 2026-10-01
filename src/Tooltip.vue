@@ -60,7 +60,7 @@ const placements = {
 			:id="tipId"
 			role="tooltip"
 			:class="[
-				'pointer-events-none absolute z-40 w-max max-w-240 rounded bg-black px-8 py-4 font-sans text-xs text-white shadow-md transition-opacity duration-100 motion-reduce:transition-none',
+				'pointer-events-none absolute z-40 w-max max-w-240 rounded-sm bg-black px-8 py-4 font-sans text-xs text-white shadow-md transition-opacity duration-100 motion-reduce:transition-none',
 				placements[placement],
 				visible ? 'opacity-100' : 'invisible opacity-0',
 			]"

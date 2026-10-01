@@ -61,7 +61,7 @@ function onKeydown(e: KeyboardEvent) {
 				:tabindex="tab.key === modelValue ? 0 : -1"
 				:disabled="tab.disabled"
 				:class="[
-					'-mb-px cursor-pointer rounded-t border-0 border-b-2 bg-transparent px-12 py-8 text-sm font-medium whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+					'-mb-px cursor-pointer rounded-t-sm border-0 border-b-2 bg-transparent px-12 py-8 text-sm font-medium whitespace-nowrap transition-colors disabled:cursor-not-allowed disabled:opacity-50',
 					tab.key === modelValue
 						? 'border-accent-dark text-accent-dark'
 						: 'border-transparent text-black/60 hover:border-gray-300 hover:text-black',

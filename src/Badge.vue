@@ -26,7 +26,7 @@ const classes = computed(() => {
 		solid: `bg-${props.color} text-${onColor(props.color)} border-transparent`,
 		outline: `bg-transparent text-black border-${props.color}`,
 	}[props.variant]
-	return `inline-flex items-center gap-4 rounded-full border font-medium leading-normal whitespace-nowrap ${size} ${variant}`
+	return `inline-flex items-center gap-4 rounded-pill border font-medium leading-normal whitespace-nowrap ${size} ${variant}`
 })
 </script>
 
@@ -43,7 +43,7 @@ const classes = computed(() => {
 			v-if="removable"
 			:size="12"
 			label="Remove"
-			class="-mr-4 rounded-full p-0!"
+			class="-mr-4 rounded-pill p-0!"
 			@click="emit('remove')"
 		/>
 	</span>

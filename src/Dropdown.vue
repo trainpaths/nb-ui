@@ -152,7 +152,7 @@ const triggerProps = computed(() => ({
 						tabindex="-1"
 						:disabled="item.disabled"
 						:class="[
-							'flex w-full cursor-pointer items-center gap-8 rounded border-none bg-transparent px-8 py-6 text-left text-sm whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50',
+							'flex w-full cursor-pointer items-center gap-8 rounded-sm border-none bg-transparent px-8 py-6 text-left text-sm whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50',
 							item.danger ? 'text-danger hover:bg-danger/10 focus:bg-danger/10' : 'text-black hover:bg-accent/20 focus:bg-accent/20',
 							focusRing,
 						]"
