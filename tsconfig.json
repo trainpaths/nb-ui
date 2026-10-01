@@ -7,5 +7,5 @@
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["index.ts", "src/**/*", "playground/**/*.ts", "playground/**/*.vue"]
+	"include": ["index.ts", "src/**/*", "tests/**/*.ts", "vitest.config.ts", "playground/**/*.ts", "playground/**/*.vue"]
 }
