@@ -14,7 +14,7 @@ withDefaults(defineProps<{ label?: string; size?: number }>(), {
 		type="button"
 		:aria-label="label"
 		:class="[
-			'inline-flex shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent p-2 text-inherit opacity-70 transition-opacity hover:opacity-100',
+			'inline-flex shrink-0 cursor-pointer items-center justify-center rounded border-none bg-transparent p-2 text-inherit opacity-70 transition-opacity hover:opacity-100 active:opacity-50',
 			focusRing,
 		]"
 	>

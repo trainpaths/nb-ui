@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Checkbox } from '../../index'
+import Info from '../Info.vue'
 import Variant from '../Variant.vue'
 
 const agree = ref(false)
@@ -30,6 +31,6 @@ const some = computed(() => picked.value.length > 0 && !allChecked.value)
 				<Checkbox v-for="s in all" :key="s" v-model="picked" :value="s" :label="s" />
 			</div>
 		</div>
-		<p class="m-0 font-mono text-xs">{{ picked }}</p>
+		<Info>v-model: {{ picked }}</Info>
 	</Variant>
 </template>

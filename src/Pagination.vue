@@ -19,7 +19,7 @@ function go(page: number) {
 	if (page >= 1 && page <= pageCount.value && page !== props.page) emit('update:page', page)
 }
 
-const btn = `inline-flex h-32 min-w-32 cursor-pointer items-center justify-center rounded border px-8 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${focusRing}`
+const btn = `inline-flex h-32 min-w-32 cursor-pointer items-center justify-center rounded border px-8 text-sm transition-[color,background-color,opacity] duration-150 not-disabled:active:opacity-70 disabled:cursor-not-allowed disabled:opacity-40 ${focusRing}`
 </script>
 
 <template>

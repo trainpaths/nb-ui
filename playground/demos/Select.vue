@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { FormField, Select } from '../../index'
+import Info from '../Info.vue'
 import Variant from '../Variant.vue'
 
 const fruit = ref<string | null>(null)
@@ -16,7 +17,7 @@ const sizes = [
 	<Variant label="string options + placeholder / object options (number values)">
 		<div class="w-240"><Select v-model="fruit" :options="['Apple', 'Banana', 'Cherry']" placeholder="Pick a fruit" /></div>
 		<div class="w-240"><Select v-model="size" :options="sizes" /></div>
-		<p class="m-0 font-mono text-xs">{{ fruit }} / {{ size }} ({{ typeof size }})</p>
+		<Info>v-model: {{ fruit }} / {{ size }} ({{ typeof size }})</Info>
 	</Variant>
 	<Variant label="in FormField / invalid / disabled / size">
 		<div class="w-240">

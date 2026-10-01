@@ -50,7 +50,7 @@ const darker: Record<string, string> = {
 const border = computed(() => props.border ?? props.bg)
 
 const classes = computed(() => {
-	const base = `relative inline-flex items-center justify-center gap-6 rounded border font-medium cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:pointer-events-none ${focusRing}`
+	const base = `relative inline-flex items-center justify-center gap-6 rounded border font-medium cursor-pointer transition-[color,background-color,border-color,opacity] duration-150 not-disabled:active:opacity-80 disabled:opacity-60 disabled:cursor-not-allowed aria-disabled:opacity-60 aria-disabled:pointer-events-none ${focusRing}`
 	const size = props.square ? squareClasses[props.size] : sizeClasses[props.size]
 	const width = props.block ? 'w-full' : ''
 

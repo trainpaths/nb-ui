@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Button, Dropdown, Icon, type DropdownItem } from '../../index'
+import Info from '../Info.vue'
 import Variant from '../Variant.vue'
 
 const last = ref('')
@@ -27,6 +28,6 @@ const items: DropdownItem[] = [
 				<Button v-bind="props">Align end</Button>
 			</template>
 		</Dropdown>
-		<p class="m-0 font-mono text-xs">selected: {{ last }}</p>
+		<Info>selected: {{ last }}</Info>
 	</Variant>
 </template>

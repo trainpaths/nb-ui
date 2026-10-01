@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() => {
 	const line = props.underline ? 'underline' : 'no-underline hover:underline'
-	return `cursor-pointer rounded-xs underline-offset-2 decoration-accent decoration-2 ${textColor(props.text)} ${line} ${focusRing}`
+	return `cursor-pointer rounded-xs underline-offset-2 decoration-current decoration-2 ${textColor(props.text)} ${line} ${focusRing}`
 })
 
 const externalAttrs = computed(() => (props.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}))
