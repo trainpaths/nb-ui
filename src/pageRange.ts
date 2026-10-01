@@ -10,6 +10,9 @@ export function pageRange(page: number, pageCount: number, siblings = 1): (numbe
 	const start = Math.max(2, Math.min(page - siblings, pageCount - 2 * siblings - 2))
 	const end = Math.min(pageCount - 1, Math.max(page + siblings, 2 * siblings + 3))
 	const middle = Array.from({ length: end - start + 1 }, (_, i) => start + i)
+	// gap of exactly one page: show the page, an ellipsis would take the same space
+	const head = start > 3 ? ['…' as const] : start === 3 ? [2] : []
+	const tail = end < pageCount - 2 ? ['…' as const] : end === pageCount - 2 ? [pageCount - 1] : []
 
-	return [1, ...(start > 2 ? ['…' as const] : []), ...middle, ...(end < pageCount - 1 ? ['…' as const] : []), pageCount]
+	return [1, ...head, ...middle, ...tail, pageCount]
 }
