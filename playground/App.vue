@@ -23,6 +23,13 @@ function setColor(token: string, value: string) {
 	document.documentElement.style.setProperty(`--color-${token}`, value)
 }
 
+const rounded = ref(true)
+
+function setRounded(on: boolean) {
+	rounded.value = on
+	document.documentElement.style.setProperty('--nb-rounded', on ? '1' : '0')
+}
+
 function resetColors() {
 	for (const t of tokens) document.documentElement.style.removeProperty(`--color-${t}`)
 	colors.value = { ...defaults }
@@ -37,7 +44,7 @@ function resetColors() {
 				v-for="demo in demos"
 				:key="demo.name"
 				:href="`#${demo.name}`"
-				class="block rounded px-8 py-4 text-sm text-gray-700 no-underline hover:bg-gray-100"
+				class="block rounded-sm px-8 py-4 text-sm text-gray-700 no-underline hover:bg-gray-100"
 			>
 				{{ demo.name }}
 			</a>
@@ -45,8 +52,16 @@ function resetColors() {
 
 		<main class="min-w-0 flex-1 p-16 md:p-32">
 			<section class="mb-32 rounded-lg border border-gray-200 bg-white p-16">
-				<div class="mb-12 flex items-center justify-between">
-					<h2 class="m-0 text-sm font-semibold">Theme colours</h2>
+				<div class="mb-12 flex items-center">
+					<h2 class="m-0 text-sm font-semibold">Theme</h2>
+					<label class="ml-auto mr-16 flex cursor-pointer items-center gap-6 text-xs text-gray-600">
+						<input
+							type="checkbox"
+							:checked="rounded"
+							@change="setRounded(($event.target as HTMLInputElement).checked)"
+						/>
+						Rounded corners (<code>--nb-rounded</code>)
+					</label>
 					<button
 						type="button"
 						class="border-none bg-transparent text-xs text-gray-500 hover:text-black"
@@ -64,7 +79,7 @@ function resetColors() {
 						<input
 							type="color"
 							:value="colors[t]"
-							class="size-24 cursor-pointer rounded border border-gray-300 p-0"
+							class="size-24 cursor-pointer rounded-sm border border-gray-300 p-0"
 							@input="setColor(t, ($event.target as HTMLInputElement).value)"
 						/>
 						{{ t }}

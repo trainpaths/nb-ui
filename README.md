@@ -84,6 +84,21 @@ automatically. Keep that relationship if you override them.
 
 Colour props (`bg`, `border`, `text`, `color` on `Button`, `Card`, `Input`, `Link`, `Badge`, `Spinner`, …) take these token names.
 
+### Corners
+
+`--nb-rounded` switches every component between rounded (`1`, default) and sharp (`0`) corners:
+
+```css
+:root {
+	--nb-rounded: 0;
+}
+```
+
+It scales Tailwind's `--radius-*` tokens, so your app's own `rounded-sm/md/lg…` classes follow it too (like
+`--spacing`). Set it on any element to switch just that subtree. Pill shapes (badges, switch, progress bar, tags) use
+the extra `rounded-pill` utility and go square. True circles (radio, avatar, spinner) stay round. Bare `rounded` and
+`rounded-t` are fixed values in Tailwind v4 and ignore the toggle: use `rounded-sm`/`rounded-t-sm`.
+
 > **Font:** `theme.css` sets `--font-sans` to Roboto, self-hosted via `@fontsource-variable/roboto` (the woff2
 > files are bundled by your Vite build, so a `font-src 'self'` CSP works). Override `--font-sans` in your `@theme` to change it.
 

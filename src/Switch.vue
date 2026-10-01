@@ -47,7 +47,7 @@ const shift = { sm: 'translate-x-12', md: 'translate-x-16' }
 			:aria-describedby="field.describedBy.value"
 			:disabled="disabled"
 			:class="[
-				'relative inline-flex shrink-0 cursor-[inherit] items-center rounded-full border-none p-2 transition-colors',
+				'relative inline-flex shrink-0 cursor-[inherit] items-center rounded-pill border-none p-2 transition-colors',
 				track[size],
 				modelValue ? 'bg-accent-dark' : 'bg-gray-300',
 				focusRing,
@@ -56,7 +56,7 @@ const shift = { sm: 'translate-x-12', md: 'translate-x-16' }
 		>
 			<span
 				:class="[
-					'rounded-full bg-white shadow-sm transition-transform motion-reduce:transition-none',
+					'rounded-pill bg-white shadow-sm transition-transform motion-reduce:transition-none',
 					thumb[size],
 					modelValue ? shift[size] : 'translate-x-0',
 				]"
