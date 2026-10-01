@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { inputFocus } from './styles'
-import { useField } from './useField'
+import { useControlAttrs, useField } from './useField'
 
 /** Multi-line Input. `autoResize` grows with the content; `counter` shows length / maxlength. */
 const props = withDefaults(
@@ -31,6 +31,9 @@ const props = withDefaults(
 
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
 const field = useField(props)
+
+defineOptions({ inheritAttrs: false })
+const { root: rootAttrs, control: controlAttrs } = useControlAttrs()
 const el = ref<HTMLTextAreaElement | null>(null)
 
 const classes = computed(() => {
@@ -52,8 +55,9 @@ watch(
 </script>
 
 <template>
-	<div>
+	<div v-bind="rootAttrs">
 		<textarea
+			v-bind="controlAttrs"
 			ref="el"
 			:id="field.id.value"
 			:value="modelValue"

@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import Icon from './Icon.vue'
 import { inputFocus } from './styles'
-import { useField } from './useField'
+import { useControlAttrs, useField } from './useField'
 
 export interface SelectOption<V = string | number> {
 	value: V
@@ -36,6 +36,9 @@ const props = withDefaults(
 const emit = defineEmits<{ 'update:modelValue': [value: T] }>()
 const field = useField(props)
 
+defineOptions({ inheritAttrs: false })
+const { root: rootAttrs, control: controlAttrs } = useControlAttrs()
+
 const normalized = computed(() =>
 	props.options.map((o) => (typeof o === 'object' ? o : { value: o, label: String(o), disabled: false })),
 )
@@ -57,8 +60,12 @@ function onChange(event: Event) {
 </script>
 
 <template>
-	<div class="relative">
+	<div
+		class="relative"
+		v-bind="rootAttrs"
+	>
 		<select
+			v-bind="controlAttrs"
 			:id="field.id.value"
 			:value="modelValue ?? ''"
 			:disabled="disabled"

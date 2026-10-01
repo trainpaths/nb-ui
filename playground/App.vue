@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, type Component } from 'vue'
-import { ToastContainer } from '../index'
+import { ConfirmDialog, ToastContainer } from '../index'
 
 /** Every `demos/<Name>.vue` becomes a section + nav entry; add a file to showcase a new component. */
 const demos = Object.entries(import.meta.glob<{ default: Component }>('./demos/*.vue', { eager: true }))
@@ -86,4 +86,5 @@ function resetColors() {
 		</main>
 	</div>
 	<ToastContainer />
+	<ConfirmDialog />
 </template>

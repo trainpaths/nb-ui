@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { type Color, borderColor, bgColor, textColor } from './colors'
 import { inputFocus } from './styles'
-import { useField } from './useField'
+import { useControlAttrs, useField } from './useField'
 
 interface Props {
 	type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
@@ -33,6 +33,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
 	'update:modelValue': [value: string | number]
 }>()
+
+defineOptions({ inheritAttrs: false })
+const { root: rootAttrs, control: inputAttrs } = useControlAttrs()
 
 const slots = defineSlots<{ prefix?(): unknown; suffix?(): unknown }>()
 const field = useField(props)
@@ -67,6 +70,7 @@ const onInput = (event: Event) => {
 <template>
 	<div
 		v-if="framed"
+		v-bind="rootAttrs"
 		:class="[
 			frameClasses,
 			'flex items-center focus-within:border-accent-dark focus-within:ring-1 focus-within:ring-accent-dark',
@@ -88,6 +92,7 @@ const onInput = (event: Event) => {
 			:aria-invalid="field.invalid.value || undefined"
 			:aria-describedby="field.describedBy.value"
 			:class="[inputClasses, slots.prefix ? 'pl-4!' : '', slots.suffix ? 'pr-4!' : '']"
+			v-bind="inputAttrs"
 			@input="onInput"
 		/>
 		<span
@@ -107,6 +112,7 @@ const onInput = (event: Event) => {
 		:id="field.id.value"
 		:aria-invalid="field.invalid.value || undefined"
 		:aria-describedby="field.describedBy.value"
+		v-bind="{ ...rootAttrs, ...inputAttrs }"
 		:class="inputClasses"
 		@input="onInput"
 	/>
