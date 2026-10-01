@@ -24,8 +24,8 @@
 	--color-primary-dark: #54356e;
 	--color-secondary: #4a4d50;
 	--color-accent: #86bbbd;
-	/* accent is ~2:1 on white: accent-dark (4.6:1) for accent-coloured text, links, focus rings, hover */
-	--color-accent-dark: #3f7f82;
+	/* accent is ~2:1 on white: accent-dark (≥4.7:1 on white tokens) for accent-coloured text, links, focus rings, hover */
+	--color-accent-dark: #3a7679;
 	--color-danger: #d32f2f;
 	--color-success: #16a34a;
 	--color-warning: #eab308;
