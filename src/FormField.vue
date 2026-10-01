@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, provide } from 'vue'
+import { computed, provide, useId } from 'vue'
+import { FIELD_KEY } from './useField'
 
+/** Label + control + hint/error. The control inside picks up id, invalid state and aria-describedby. */
 interface Props {
 	label?: string
 	error?: string
@@ -13,11 +15,16 @@ const props = withDefaults(defineProps<Props>(), {
 	required: false,
 })
 
-const fieldId = computed(() => props.id || `field-${Math.random().toString(36).slice(2, 9)}`)
+const autoId = useId()
+const fieldId = computed(() => props.id || `field-${autoId}`)
+const messageId = computed(() => `${fieldId.value}-msg`)
 const hasError = computed(() => !!props.error)
 
-provide('fieldId', fieldId)
-provide('fieldInvalid', hasError)
+provide(FIELD_KEY, {
+	id: fieldId,
+	invalid: hasError,
+	describedBy: computed(() => (props.error || props.hint ? messageId.value : undefined)),
+})
 </script>
 
 <template>
@@ -25,12 +32,24 @@ provide('fieldInvalid', hasError)
 		<label
 			v-if="label"
 			:for="fieldId"
-			class="text-sm font-medium text-gray-700"
+			class="text-sm font-medium text-black"
 		>
-			{{ label }}<span v-if="required" class="text-error ml-2">*</span>
+			{{ label }}<span v-if="required" class="ml-2 text-error" aria-hidden="true">*</span>
 		</label>
 		<slot />
-		<p v-if="error" class="text-sm text-error">{{ error }}</p>
-		<p v-else-if="hint" class="text-sm text-black opacity-60">{{ hint }}</p>
+		<p
+			v-if="error"
+			:id="messageId"
+			class="m-0 text-sm text-error"
+		>
+			{{ error }}
+		</p>
+		<p
+			v-else-if="hint"
+			:id="messageId"
+			class="m-0 text-sm text-black/60"
+		>
+			{{ hint }}
+		</p>
 	</div>
 </template>

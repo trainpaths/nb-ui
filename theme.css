@@ -10,7 +10,9 @@
 @source './src';
 
 /* components build colour classes at runtime (`bg-${name}`), which the scanner can't see */
-@source inline('{bg,border,text}-{primary,primary-dark,secondary,accent,danger,success,warning,error,white,black}');
+@source inline('{,hover:}{bg,border,text,outline,ring,decoration}-{primary,primary-dark,secondary,accent,accent-dark,danger,success,warning,error,white,black}');
+@source inline('{,hover:}bg-{primary,primary-dark,secondary,accent,accent-dark,danger,success,warning,error,white,black}/{10,15,20}');
+@source inline('border-{primary,primary-dark,secondary,accent,accent-dark,danger,success,warning,error,white,black}/{30,40}');
 
 @theme {
 	/* components are written in px units: p-16 → 16px. Applies to the whole app. */
@@ -18,10 +20,12 @@
 
 	--font-sans: 'Roboto Variable', -apple-system, BlinkMacSystemFont, sans-serif;
 
-	--color-primary: #744997;
-	--color-primary-dark: #5d3a79;
-	--color-secondary: #5f6368;
-	--color-accent: #5d3a79;
+	--color-primary: #6a428a;
+	--color-primary-dark: #54356e;
+	--color-secondary: #4a4d50;
+	--color-accent: #86bbbd;
+	/* accent is ~2:1 on white: accent-dark (4.6:1) for accent-coloured text, links, focus rings, hover */
+	--color-accent-dark: #3f7f82;
 	--color-danger: #d32f2f;
 	--color-success: #16a34a;
 	--color-warning: #eab308;

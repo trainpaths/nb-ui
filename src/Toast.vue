@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ToastType } from './useToast'
+import CloseButton from './CloseButton.vue'
+import Icon, { type IconName } from './Icon.vue'
 
 interface Props {
 	message: string
@@ -16,33 +18,40 @@ const emit = defineEmits<{
 }>()
 
 const colorMap: Record<ToastType, string> = {
-	success: 'bg-success',
-	warning: 'bg-warning',
-	error: 'bg-error',
-	info: 'bg-accent',
+	success: 'bg-success text-white',
+	warning: 'bg-warning text-black',
+	error: 'bg-error text-white',
+	info: 'bg-accent text-black',
 }
 
-const textMap: Record<ToastType, string> = {
-	success: 'text-white',
-	warning: 'text-black',
-	error: 'text-white',
-	info: 'text-white',
+const iconMap: Record<ToastType, IconName> = {
+	success: 'check-circle',
+	warning: 'alert-triangle',
+	error: 'alert-circle',
+	info: 'info',
 }
 
-const classes = computed(() => {
-	const base = 'rounded px-16 py-8 flex items-center justify-between gap-16 min-w-[280px] shadow-lg'
-	return `${base} ${colorMap[props.type]} ${textMap[props.type]}`
-})
+// fixed width: the leave animation takes it out of flow (absolute), which must not resize it
+const classes = computed(
+	() =>
+		`flex w-320 max-w-[calc(100vw-32px)] items-start gap-10 rounded-md px-14 py-10 text-sm shadow-lg ${colorMap[props.type]}`,
+)
 </script>
 
 <template>
-	<div :class="classes">
-		<span>{{ message }}</span>
-		<button
-			class="cursor-pointer bg-transparent border-none text-inherit opacity-70 hover:opacity-100"
+	<div
+		:class="classes"
+		:role="type === 'error' ? 'alert' : 'status'"
+	>
+		<Icon
+			:name="iconMap[type]"
+			:size="18"
+			class="mt-1"
+		/>
+		<span class="flex-1 break-words">{{ message }}</span>
+		<CloseButton
+			label="Dismiss"
 			@click="emit('dismiss')"
-		>
-			✕
-		</button>
+		/>
 	</div>
 </template>

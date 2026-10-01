@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Alert } from '../../index'
+import { Alert, Button } from '../../index'
 import Variant from '../Variant.vue'
 
 const shown = ref(true)
@@ -15,10 +15,12 @@ const shown = ref(true)
 			<Alert type="error">Error message</Alert>
 		</div>
 	</Variant>
-	<Variant label="dismissible">
+	<Variant label="title / dismissible">
 		<div class="w-full max-w-480">
-			<Alert v-if="shown" type="info" dismissible @dismiss="shown = false">Close me</Alert>
-			<button v-else type="button" class="text-xs" @click="shown = true">Show again</button>
+			<Alert v-if="shown" type="warning" title="Unpublished changes" dismissible @dismiss="shown = false">
+				This page has edits that are not live yet.
+			</Alert>
+			<Button v-else size="sm" variant="ghost" @click="shown = true">Show again</Button>
 		</div>
 	</Variant>
 </template>

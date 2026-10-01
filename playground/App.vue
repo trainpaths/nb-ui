@@ -7,7 +7,7 @@ const demos = Object.entries(import.meta.glob<{ default: Component }>('./demos/*
 	.map(([path, mod]) => ({ name: path.slice('./demos/'.length, -'.vue'.length), component: mod.default }))
 	.sort((a, b) => a.name.localeCompare(b.name))
 
-const tokens = ['primary', 'primary-dark', 'secondary', 'accent', 'danger', 'success', 'warning', 'error', 'white', 'black']
+const tokens = ['primary', 'primary-dark', 'secondary', 'accent', 'accent-dark', 'danger', 'success', 'warning', 'error', 'white', 'black']
 const colors = ref<Record<string, string>>({})
 const defaults: Record<string, string> = {}
 
