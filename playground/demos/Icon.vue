@@ -2,7 +2,7 @@
 import { CloseButton, Icon, type IconName } from '../../index'
 import Variant from '../Variant.vue'
 
-const names: IconName[] = ['x', 'check', 'minus', 'plus', 'chevron-down', 'chevron-up', 'chevron-left', 'chevron-right', 'info', 'alert-triangle', 'alert-circle', 'check-circle', 'more', 'search', 'inbox']
+const names: IconName[] = ['x', 'check', 'minus', 'plus', 'chevron-down', 'chevron-up', 'chevron-left', 'chevron-right', 'info', 'alert-triangle', 'alert-circle', 'check-circle', 'more', 'search', 'inbox', 'masonry', 'file', 'list-tree', 'image', 'settings', 'user', 'exit', 'menu']
 </script>
 
 <template>
