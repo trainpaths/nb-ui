@@ -155,4 +155,4 @@ Automatic: every push to `main` runs `.github/workflows/release.yml` (typecheck 
 | only `docs` / `chore` / `ci` / `test` / `style` / `build` | no release |
 
 Force a bump: Actions → Release → Run workflow → `patch` / `minor` / `major`.
-Pull `main` after a push: the workflow adds a `chore(release)` commit.
+The `chore(release)` version bump is committed on the tag only, not on `main`: the `version` in `main`'s `package.json` is stale, tags are authoritative.

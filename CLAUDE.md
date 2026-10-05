@@ -33,5 +33,6 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 - Style: tabs, `<script setup lang="ts">`, spacing utilities are px (`p-16`), colours via theme token names.
 - Release: automatic on push to `main` (`.github/workflows/release.yml`): Conventional Commits since last tag → bump
   (`!`/`BREAKING CHANGE` major, `feat` minor, else patch; docs/chore/ci/test/style/build only → none), commits
-  `chore(release): vX.Y.Z`, tags, GitHub release. Manual run can force the bump. Always `git pull` after pushing.
+  `chore(release): vX.Y.Z` on the tag only (never pushed to `main`, so `package.json` version there is stale), GitHub
+  release. Manual run can force the bump.
   Apps then bump the tag in their dependency.
