@@ -14,7 +14,7 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
   the app's `src/lib/nbUI/<basename>` if it exists. Plain JS on purpose: Node won't strip types in node_modules and
   Vite's config loader externalizes deps. Also excludes the package from `optimizeDeps`.
 - Shared building blocks (reuse, don't re-roll): `styles.ts` (`focusRing`, `inputFocus` class strings), `colors.ts`
-  (`bgColor()`… + `onColor(bg)` = readable text token on a fill), `Icon.vue` (built-in inline SVG set, add paths there),
+  (`bgColor()`… + `onColor(bg)` = readable text token on a fill), `Icon.vue` (built-in inline SVG set, add paths there; a path may be `{ d, width }` for its own stroke width),
   `CloseButton.vue`, `Spinner.vue`, `useField.ts` (`useField` wires a control to `FormField` via inject: id,
   aria-invalid, aria-describedby; `useControlAttrs` + `inheritAttrs: false` sends non-class attrs to the native control
   when the root is a wrapper div), `scrollLock.ts` (shared Modal counter).

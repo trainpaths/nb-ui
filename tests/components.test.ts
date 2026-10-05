@@ -4,6 +4,7 @@ import { defineComponent, h, nextTick, ref } from 'vue'
 import Button from '../src/Button.vue'
 import Checkbox from '../src/Checkbox.vue'
 import FormField from '../src/FormField.vue'
+import Icon from '../src/Icon.vue'
 import Input from '../src/Input.vue'
 import Modal from '../src/Modal.vue'
 import Tabs from '../src/Tabs.vue'
@@ -109,5 +110,13 @@ describe('Tabs', () => {
 		await w.setProps({ modelValue: 'c' })
 		await w.find('[role=tablist]').trigger('keydown', { key: 'ArrowRight' })
 		expect(w.emitted('update:modelValue')![1]).toEqual(['a'])
+	})
+})
+
+describe('Icon', () => {
+	it('keeps the svg stroke width unless a path sets its own', () => {
+		const paths = mount(Icon, { props: { name: 'list-tree' } }).findAll('path')
+		expect(paths[0].attributes('stroke-width')).toBeUndefined()
+		expect(paths.some((p) => p.attributes('stroke-width') === '1.25')).toBe(true)
 	})
 })
