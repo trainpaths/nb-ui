@@ -93,7 +93,8 @@ function onChange(event: Event) {
 			<slot />
 		</select>
 		<Icon
-			name="chevron-down"
+			name="chevron"
+			:rotate="270"
 			class="pointer-events-none absolute top-1/2 right-10 -translate-y-1/2 text-black/50"
 		/>
 	</div>
