@@ -2,6 +2,8 @@
 /**
  * Small built-in stroke icon set (24×24, `currentColor`), so components need no icon dependency.
  * Decorative by default (`aria-hidden`); pass `label` to expose it to screen readers.
+ * Directional shapes exist once, pointing left (`chevron`, `arrow`, `panel`); `rotate` (degrees, clockwise) turns them:
+ * 90 up, 180 right, 270 down.
  */
 import { computed } from 'vue'
 
@@ -10,10 +12,7 @@ export type IconName =
 	| 'check'
 	| 'minus'
 	| 'plus'
-	| 'chevron-down'
-	| 'chevron-up'
-	| 'chevron-left'
-	| 'chevron-right'
+	| 'chevron'
 	| 'info'
 	| 'alert-triangle'
 	| 'alert-circle'
@@ -29,10 +28,22 @@ export type IconName =
 	| 'user'
 	| 'exit'
 	| 'menu'
+	| 'duplicate'
+	| 'download'
+	| 'upload'
+	| 'trash'
+	| 'edit'
+	| 'save'
+	| 'grip'
+	| 'eye'
+	| 'external-link'
+	| 'arrow'
+	| 'panel'
 
-const props = withDefaults(defineProps<{ name: IconName; size?: number; label?: string }>(), {
+const props = withDefaults(defineProps<{ name: IconName; size?: number; label?: string; rotate?: number }>(), {
 	size: 16,
 	label: undefined,
+	rotate: 0,
 })
 
 // string = path at the default stroke width
@@ -43,10 +54,7 @@ const paths: Record<IconName, IconPath[]> = {
 	check: ['M20 6 9 17l-5-5'],
 	minus: ['M5 12h14'],
 	plus: ['M12 5v14', 'M5 12h14'],
-	'chevron-down': ['m6 9 6 6 6-6'],
-	'chevron-up': ['m18 15-6-6-6 6'],
-	'chevron-left': ['m15 18-6-6 6-6'],
-	'chevron-right': ['m9 18 6-6-6-6'],
+	chevron: ['m15 18-6-6 6-6'],
 	info: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 16v-4', 'M12 8h.01'],
 	'alert-triangle': [
 		'm21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z',
@@ -100,6 +108,29 @@ const paths: Record<IconName, IconPath[]> = {
 	user: ['M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2', 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'],
 	exit: ['M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4', 'm16 17 5-5-5-5', 'M21 12H9'],
 	menu: ['M4 6h16', 'M4 12h16', 'M4 18h16'],
+	duplicate: [
+		'M10 8h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z',
+		'M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2',
+	],
+	download: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'm7 10 5 5 5-5', 'M12 15V3'],
+	upload: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'm17 8-5-5-5 5', 'M12 3v12'],
+	trash: ['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'],
+	edit: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z'],
+	save: [
+		'M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
+		'M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7',
+		'M7 3v4a1 1 0 0 0 1 1h7',
+	],
+	// 2×3 dots, drag handle
+	grip: ['M9 5h.01', 'M15 5h.01', 'M9 12h.01', 'M15 12h.01', 'M9 19h.01', 'M15 19h.01'].map((d) => ({ d, width: 3 })),
+	eye: [
+		'M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0',
+		'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+	],
+	'external-link': ['M15 3h6v6', 'M10 14 21 3', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'],
+	arrow: ['M19 12H5', 'm12 19-7-7 7-7'],
+	// sidebar on the left; rotate 180 = right
+	panel: ['M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z', 'M9 3v18'],
 }
 
 const d = computed(() => paths[props.name].map((p) => (typeof p === 'string' ? { d: p, width: undefined } : p)))
@@ -117,6 +148,7 @@ const d = computed(() => paths[props.name].map((p) => (typeof p === 'string' ? {
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		class="shrink-0"
+		:style="rotate ? { rotate: `${rotate}deg` } : undefined"
 		:aria-hidden="label ? undefined : 'true'"
 		:aria-label="label"
 		:role="label ? 'img' : undefined"

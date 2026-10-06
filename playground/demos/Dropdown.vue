@@ -19,7 +19,7 @@ const items: DropdownItem[] = [
 		<Dropdown :items="items" @select="last = $event.label">
 			<template #trigger="{ props, open }">
 				<Button variant="outline" v-bind="props">
-					Actions <Icon :name="open ? 'chevron-up' : 'chevron-down'" />
+					Actions <Icon name="chevron" :rotate="open ? 90 : 270" />
 				</Button>
 			</template>
 		</Dropdown>

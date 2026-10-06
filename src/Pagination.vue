@@ -34,7 +34,7 @@ const btn = `inline-flex h-32 min-w-32 cursor-pointer items-center justify-cente
 			aria-label="Previous page"
 			@click="go(page - 1)"
 		>
-			<Icon name="chevron-left" />
+			<Icon name="chevron" />
 		</button>
 		<template
 			v-for="(p, i) in pages"
@@ -69,7 +69,7 @@ const btn = `inline-flex h-32 min-w-32 cursor-pointer items-center justify-cente
 			aria-label="Next page"
 			@click="go(page + 1)"
 		>
-			<Icon name="chevron-right" />
+			<Icon name="chevron" :rotate="180" />
 		</button>
 	</nav>
 </template>

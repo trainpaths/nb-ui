@@ -125,4 +125,9 @@ describe('Icon', () => {
 		expect(paths[0].attributes('stroke-width')).toBeUndefined()
 		expect(paths.some((p) => p.attributes('stroke-width') === '1.25')).toBe(true)
 	})
+
+	it('rotates only when asked', () => {
+		expect(mount(Icon, { props: { name: 'arrow' } }).attributes('style')).toBeUndefined()
+		expect(mount(Icon, { props: { name: 'arrow', rotate: 180 } }).attributes('style')).toContain('rotate: 180deg')
+	})
 })
