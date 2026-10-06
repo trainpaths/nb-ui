@@ -111,6 +111,12 @@ describe('Tabs', () => {
 		await w.find('[role=tablist]').trigger('keydown', { key: 'ArrowRight' })
 		expect(w.emitted('update:modelValue')![1]).toEqual(['a'])
 	})
+
+	// overflow-x-auto makes overflow-y auto too: a -mb-px tab would poke out and add a scrollbar
+	it('tabs have no negative bottom margin', () => {
+		const w = mount(Tabs, { props: { tabs: [{ key: 'a', label: 'A' }], modelValue: 'a' } })
+		expect(w.find('[role=tab]').classes()).not.toContain('-mb-px')
+	})
 })
 
 describe('Icon', () => {
