@@ -27,6 +27,23 @@ describe('Button', () => {
 		expect(mount(Button).attributes('type')).toBe('button')
 		expect(mount(Button, { attrs: { type: 'submit' } }).attributes('type')).toBe('submit')
 	})
+
+	it('renders a router-link for `to`; disabled takes it out of the Tab order', () => {
+		const RouterLink = defineComponent({
+			props: { to: String },
+			setup: (props, { slots }) => () => h('a', { href: props.to }, slots.default?.()),
+		})
+		const w = mount(Button, {
+			props: { to: '/settings', disabled: true },
+			global: { components: { RouterLink } },
+		})
+		expect(w.element.tagName).toBe('A')
+		expect(w.attributes('href')).toBe('/settings')
+		expect(w.attributes('type')).toBeUndefined()
+		expect(w.attributes('aria-disabled')).toBe('true')
+		expect(w.attributes('tabindex')).toBe('-1')
+		expect(w.classes()).toContain('bg-accent')
+	})
 })
 
 describe('Checkbox', () => {
