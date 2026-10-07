@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
+import Accordion from '../src/Accordion.vue'
 import Button from '../src/Button.vue'
 import Checkbox from '../src/Checkbox.vue'
 import Dropdown from '../src/Dropdown.vue'
@@ -12,6 +13,31 @@ import Popover from '../src/Popover.vue'
 import TagInput from '../src/TagInput.vue'
 import Tabs from '../src/Tabs.vue'
 import Tooltip from '../src/Tooltip.vue'
+
+describe('Accordion', () => {
+	const items = [
+		{ key: 'a', label: 'A' },
+		{ key: 'b', label: 'B' },
+	]
+	const panels = { a: () => 'Panel A', b: () => 'Panel B' }
+
+	it('opens one at a time by default and wires aria-expanded / aria-controls', async () => {
+		const w = mount(Accordion, { props: { items }, slots: panels })
+		const [a, b] = w.findAll('button')
+		await a!.trigger('click')
+		expect(a!.attributes('aria-expanded')).toBe('true')
+		expect(w.find(`#${a!.attributes('aria-controls')}`).isVisible()).toBe(true)
+		await b!.trigger('click')
+		expect(a!.attributes('aria-expanded')).toBe('false')
+		expect(b!.attributes('aria-expanded')).toBe('true')
+	})
+
+	it('keeps several open with `multiple` and emits the open keys', async () => {
+		const w = mount(Accordion, { props: { items, multiple: true, modelValue: ['a'] }, slots: panels })
+		await w.findAll('button')[1]!.trigger('click')
+		expect(w.emitted('update:modelValue')).toEqual([[['a', 'b']]])
+	})
+})
 
 describe('Button', () => {
 	it('defaults to accent with readable dark text', () => {
