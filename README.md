@@ -1,29 +1,25 @@
 # nb-ui
 
-Vue 3 + Tailwind CSS v4 UI components, shipped as **source** (no build step): your app's Vite compiles them.
-Any component can be overridden by dropping a file with the same name into your project.
-
-| Group | Components |
-|---|---|
-| Actions & text | `Button`, `Link`, `Icon`, `CloseButton` |
-| Forms | `Form`, `FormField`, `Input`, `Select`, `Textarea`, `Checkbox`, `Switch`, `RadioGroup`, `TagInput` |
-| Overlays | `Modal`, `ConfirmDialog` + `useConfirm()`, `UnsavedChangesDialog` + `useUnsavedChanges()`, `Dropdown`, `Tooltip` |
-| Feedback | `Alert`, `Toast`, `ToastContainer` + `useToast()`, `Spinner`, `Loading`, `Skeleton`, `ProgressBar` |
-| Display & navigation | `Card`, `Badge`, `Avatar`, `Tabs`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
-
-Run `pnpm dev` for a playground with every component and its props.
+Vue 3 + Tailwind CSS v4 components, shipped as source: your app's Vite compiles them, and any component can be
+replaced by a file of the same name in your app.
 
 ## Install
 
-Requires Vue 3.5+, Vite and Tailwind v4 (`@tailwindcss/vite`). `Link` renders `<router-link>` when given `to`,
-so that needs vue-router.
+Needs Vue 3.5+, Vite and Tailwind v4 (`@tailwindcss/vite`). vue-router only if you use `to` on `Link`/`Button`.
 
 ```bash
-pnpm add github:trainpaths/nb-ui#v0.1.0
+pnpm add github:trainpaths/nb-ui#semver:^1.0.0
 ```
+
+`pnpm update @trainpaths/nb-ui` picks up new releases within that range.
+
+## Setup
 
 ```ts
 // vite.config.ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
 import { nbUi } from '@trainpaths/nb-ui/vite'
 
 export default defineConfig({
@@ -32,48 +28,61 @@ export default defineConfig({
 ```
 
 ```css
-/* your main stylesheet */
+/* main stylesheet */
 @import 'tailwindcss';
 @import '@trainpaths/nb-ui/theme.css';
 ```
 
-```ts
-import { Button, useToast } from '@trainpaths/nb-ui'
-```
-
-Mount the global hosts once (e.g. in `App.vue`) to use `useToast()` and `useConfirm()`:
+Mount the global hosts once, e.g. in `App.vue`, for `useToast()` and `useConfirm()`:
 
 ```vue
-<ToastContainer />
-<ConfirmDialog />
+<template>
+	<RouterView />
+	<ToastContainer />
+	<ConfirmDialog />
+</template>
 ```
 
-```ts
+## Usage
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Button, Form, FormField, Input, useConfirm, useToast } from '@trainpaths/nb-ui'
+
+const email = ref('')
 const { toast } = useToast()
-toast.success('Saved') // also .error / .warning / .info, or toast({ message, type, duration })
-
 const { confirm } = useConfirm()
-if (await confirm({ title: 'Delete page?', confirmText: 'Delete', danger: true })) remove()
+
+async function remove() {
+	if (await confirm({ title: 'Delete account?', confirmText: 'Delete', danger: true })) toast.success('Deleted')
+}
+</script>
+
+<template>
+	<Form @submit="toast.success('Saved')">
+		<FormField label="Email" hint="We never share it." required>
+			<Input v-model="email" type="email" />
+		</FormField>
+		<Button type="submit">Save</Button>
+		<Button variant="outline" border="danger" @click="remove">Delete account</Button>
+	</Form>
+</template>
 ```
 
-Update: bump the tag (`pnpm add github:trainpaths/nb-ui#v0.2.0`).
+| Group | Components |
+|---|---|
+| Actions | `Button`, `Link`, `Icon`, `CloseButton` |
+| Forms | `Form`, `FormField`, `Input`, `Select`, `Textarea`, `Checkbox`, `Switch`, `RadioGroup`, `TagInput` |
+| Overlays | `Modal`, `ConfirmDialog` + `useConfirm()`, `UnsavedChangesDialog` + `useUnsavedChanges()`, `Popover`, `Dropdown`, `Tooltip` |
+| Feedback | `Alert`, `Toast`, `ToastContainer` + `useToast()`, `Spinner`, `Loading`, `Skeleton`, `ProgressBar` |
+| Display | `Card`, `Badge`, `Avatar`, `Tabs`, `Accordion`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
+
+Every component with all its props: clone the repo and run `pnpm dev`.
 
 ## Theming
 
-`theme.css` defines the colour tokens. Redefine any of them after the import:
-
-| Token | Default | Used for |
-|---|---|---|
-| `primary` / `primary-dark` | `#6A428A` / `#54356E` | brand fills (`bg="primary"`), its hover |
-| `secondary` | `#4A4D50` | neutral fills |
-| `accent` | `#86BBBD` | default `Button` fill, tints (alerts, badges, hover), info toast |
-| `accent-dark` | `#3A7679` | accent-coloured **text** (`Link`, outline/ghost buttons), focus rings, accent hover |
-| `danger`, `error`, `success`, `warning` | | states |
-| `white`, `black` | `#F4F5F6`, `#131B23` | surfaces, text |
-
-`accent` is a light colour (~2:1 on white), so components never put text *in* accent: links and outline buttons use
-`accent-dark` (≥4.5:1 on `white`), and solid fills on light tokens (`accent`, `warning`, `white`) get black text
-automatically. Keep that relationship if you override them.
+Colour props (`bg`, `border`, `text`, `color`) take theme token names. Override tokens after the import:
 
 ```css
 @theme {
@@ -82,11 +91,18 @@ automatically. Keep that relationship if you override them.
 }
 ```
 
-Colour props (`bg`, `border`, `text`, `color` on `Button`, `Card`, `Input`, `Link`, `Badge`, `Spinner`, …) take these token names.
+| Token | Default | Used for |
+|---|---|---|
+| `primary` / `primary-dark` | `#6A428A` / `#54356E` | brand fills, their hover |
+| `secondary` | `#4A4D50` | neutral fills |
+| `accent` | `#86BBBD` | default `Button`, tints, info |
+| `accent-dark` | `#3A7679` | accent-coloured text, links, focus rings |
+| `danger`, `error`, `success`, `warning` | | states |
+| `white`, `black` | `#F4F5F6` / `#131B23` | surfaces, text |
 
-### Corners
+`accent` is too light for text, so text uses `accent-dark`. Keep that contrast if you change them.
 
-`--nb-rounded` switches every component between rounded (`1`, default) and sharp (`0`) corners:
+Sharp corners everywhere (or on any subtree):
 
 ```css
 :root {
@@ -94,24 +110,17 @@ Colour props (`bg`, `border`, `text`, `color` on `Button`, `Card`, `Input`, `Lin
 }
 ```
 
-It scales Tailwind's `--radius-*` tokens, so your app's own `rounded-sm/md/lg…` classes follow it too (like
-`--spacing`). Set it on any element to switch just that subtree. Pill shapes (badges, switch, progress bar, tags) use
-the extra `rounded-pill` utility and go square. True circles (radio, avatar, spinner) stay round. Bare `rounded` and
-`rounded-t` are fixed values in Tailwind v4 and ignore the toggle: use `rounded-sm`/`rounded-t-sm`.
+Good to know:
 
-> **Font:** `theme.css` sets `--font-sans` to Roboto, self-hosted via `@fontsource-variable/roboto` (the woff2
-> files are bundled by your Vite build, so a `font-src 'self'` CSP works). Override `--font-sans` in your `@theme` to change it.
-
-> **Note:** `theme.css` sets `--spacing: 1px`, so every Tailwind spacing utility in your app is in px
-> (`p-16` = 16px). The components are written that way.
+- `theme.css` sets `--spacing: 1px`, so all spacing utilities in your app are px (`p-16` = 16px).
+- Font is self-hosted Roboto. Change it with `--font-sans` in your `@theme`.
+- `Popover`, `Dropdown` and `Tooltip` are absolutely positioned, so an `overflow: hidden` ancestor clips them.
 
 ## Overriding a component
 
-Create `src/lib/nbUI/<Name>.vue` in your app. The Vite plugin serves it instead of the library's `<Name>.vue`,
-everywhere: in your imports from `@trainpaths/nb-ui` *and* inside the library (e.g. an overridden `Button` is also
-used by `UnsavedChangesDialog`). Restart the dev server after adding or removing an override file.
-
-Start from a copy of the original, or wrap it:
+Put `src/lib/nbUI/<Name>.vue` in your app. It replaces the library's `<Name>.vue` everywhere, including inside other
+components (an overridden `Button` is also used by the dialogs). Restart the dev server after adding or removing one.
+Keep its props compatible with the original.
 
 ```vue
 <!-- src/lib/nbUI/Button.vue -->
@@ -120,39 +129,23 @@ import Base from '@trainpaths/nb-ui/src/Button.vue'
 </script>
 
 <template>
-	<!-- props/attrs fall through to Base -->
 	<Base class="uppercase tracking-wide"><slot /></Base>
 </template>
 ```
 
-A different folder: `nbUi({ dir: 'src/components/ui' })`. Type-checking still sees the library's props, so keep an
-override's props compatible with the original.
+Other folder: `nbUi({ dir: 'src/components/ui' })`.
 
-## Developing
+## Development
 
 ```bash
 pnpm install
-pnpm dev         # playground: every component + live theme colour pickers
+pnpm dev         # playground
 pnpm typecheck
-pnpm test        # Vitest (happy-dom): composables + component behaviour
+pnpm test
 ```
 
-Each `playground/demos/<Name>.vue` is one section of the playground (auto-discovered): add one for every new
-component, and export the component from `index.ts`.
+New component: add it to `src/`, export it from `index.ts`, add a `playground/demos/<Name>.vue`.
+Try it in an app before release with `pnpm link ../nb-ui`.
 
-To try changes in an app before tagging: `pnpm link ../nb-ui` in the app, `pnpm unlink` afterwards.
-
-### Releases
-
-Automatic: every push to `main` runs `.github/workflows/release.yml` (typecheck + build, then bump
-`package.json`, tag `vX.Y.Z`, GitHub release). The bump comes from the Conventional Commits since the last tag:
-
-| Commits contain | Bump |
-|---|---|
-| `feat!:` / `fix(ui)!:` (any type with `!`) or a `BREAKING CHANGE:` footer | major |
-| `feat:` | minor |
-| anything else (`fix:`, `refactor:`, non-conventional messages, ...) | patch |
-| only `docs` / `chore` / `ci` / `test` / `style` / `build` | no release |
-
-Force a bump: Actions → Release → Run workflow → `patch` / `minor` / `major`.
-The `chore(release)` version bump is committed on the tag only, not on `main`: the `version` in `main`'s `package.json` is stale, tags are authoritative.
+Releases are automatic on push to `main`, from Conventional Commits: `feat` → minor, `fix` and others → patch,
+`!` or `BREAKING CHANGE` → major, only `docs`/`chore`/`ci`/`test`/`style`/`build` → no release.
