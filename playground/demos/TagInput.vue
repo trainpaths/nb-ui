@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { TagInput } from '../../index'
+import { FormField, TagInput } from '../../index'
 import Variant from '../Variant.vue'
 
 const tags = ref(['vue', 'tailwind'])
@@ -22,6 +22,18 @@ const suggestions = ['vue', 'vite', 'tailwind', 'typescript', 'pinia', 'router',
 				:max-length="10"
 				:normalize="(v: string) => v.trim().toLowerCase()"
 			/>
+		</div>
+	</Variant>
+	<Variant label="in a FormField (label, hint, error)">
+		<div class="w-360">
+			<FormField label="Topics" hint="Up to 5.">
+				<TagInput v-model="tags" :max="5" />
+			</FormField>
+		</div>
+		<div class="w-360">
+			<FormField label="Topics" error="Add at least one topic.">
+				<TagInput v-model="limited" />
+			</FormField>
 		</div>
 	</Variant>
 </template>

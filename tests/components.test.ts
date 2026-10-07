@@ -7,6 +7,7 @@ import FormField from '../src/FormField.vue'
 import Icon from '../src/Icon.vue'
 import Input from '../src/Input.vue'
 import Modal from '../src/Modal.vue'
+import TagInput from '../src/TagInput.vue'
 import Tabs from '../src/Tabs.vue'
 import Tooltip from '../src/Tooltip.vue'
 
@@ -63,6 +64,26 @@ describe('FormField + Input', () => {
 		await w.find('input').setValue('')
 		await w.find('input').setValue('7')
 		expect(w.emitted('update:modelValue')).toEqual([[''], [7]])
+	})
+})
+
+describe('TagInput', () => {
+	it('takes label, error and invalid state from FormField', () => {
+		const w = mount(FormField, {
+			props: { label: 'Topics', error: 'Required' },
+			slots: { default: () => h(TagInput, { modelValue: [] }) },
+		})
+		const input = w.find('input')
+		expect(w.find('label').attributes('for')).toBe(input.attributes('id'))
+		expect(input.attributes('aria-label')).toBeUndefined()
+		expect(input.attributes('aria-invalid')).toBe('true')
+		expect(w.find(`#${input.attributes('aria-describedby')}`).text()).toBe('Required')
+	})
+
+	it('keeps an aria-label standalone and takes testId', () => {
+		const w = mount(TagInput, { props: { modelValue: [], testId: 'topics' } })
+		expect(w.find('input').attributes('aria-label')).toBe('Tags')
+		expect(w.attributes('data-testid')).toBe('topics')
 	})
 })
 

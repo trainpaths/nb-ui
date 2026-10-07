@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
 import CloseButton from './CloseButton.vue'
+import { inputBorder, inputFocusWithin } from './styles'
+import { useField } from './useField'
 
 /**
  * Chips + text input for a list of single-word tags. Enter, comma and Space add (the highlighted suggestion or
  * the typed word); pasted text is split on whitespace/commas. Backspace on an empty input removes the last chip,
  * typing filters `suggestions` into a dropdown. `popular` renders as one-click chips under the input. Values pass
- * through `normalize` before adding.
+ * through `normalize` before adding. Inside a FormField it picks up the label, hint/error and invalid state.
  */
 const props = withDefaults(
 	defineProps<{
@@ -17,7 +19,10 @@ const props = withDefaults(
 		maxLength?: number
 		normalize?: (value: string) => string
 		placeholder?: string
+		/** accessible name when no FormField label points at it */
 		label?: string
+		invalid?: boolean
+		id?: string
 		testId?: string
 	}>(),
 	{
@@ -28,10 +33,13 @@ const props = withDefaults(
 		normalize: (value: string) => value.trim(),
 		placeholder: 'Add tag…',
 		label: 'Tags',
+		invalid: false,
+		id: undefined,
 		testId: 'tag-input',
 	},
 )
 const emit = defineEmits<{ 'update:modelValue': [value: string[]] }>()
+const field = useField(props)
 
 const text = ref('')
 const open = ref(false)
@@ -112,7 +120,11 @@ function onBlur() {
 		:data-testid="testId"
 	>
 		<div
-			class="flex min-h-32 cursor-text flex-wrap items-center gap-4 rounded-sm border border-gray-300 bg-white px-6 py-4 focus-within:border-accent-dark focus-within:ring-1 focus-within:ring-accent-dark"
+			:class="[
+				'flex min-h-32 cursor-text flex-wrap items-center gap-4 rounded-md border bg-white px-6 py-4',
+				inputBorder(field.invalid.value),
+				inputFocusWithin,
+			]"
 			@click="input?.focus()"
 		>
 			<span
@@ -130,6 +142,7 @@ function onBlur() {
 				/>
 			</span>
 			<input
+				:id="field.id.value"
 				ref="input"
 				v-model="text"
 				type="text"
@@ -137,7 +150,9 @@ function onBlur() {
 				:placeholder="full ? `Max ${max} tags` : placeholder"
 				:disabled="full"
 				:maxlength="maxLength"
-				:aria-label="label"
+				:aria-label="field.id.value ? undefined : label"
+				:aria-invalid="field.invalid.value || undefined"
+				:aria-describedby="field.describedBy.value"
 				role="combobox"
 				:aria-expanded="open && matches.length > 0"
 				:aria-controls="listId"
