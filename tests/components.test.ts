@@ -3,10 +3,12 @@ import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import Button from '../src/Button.vue'
 import Checkbox from '../src/Checkbox.vue'
+import Dropdown from '../src/Dropdown.vue'
 import FormField from '../src/FormField.vue'
 import Icon from '../src/Icon.vue'
 import Input from '../src/Input.vue'
 import Modal from '../src/Modal.vue'
+import Popover from '../src/Popover.vue'
 import TagInput from '../src/TagInput.vue'
 import Tabs from '../src/Tabs.vue'
 import Tooltip from '../src/Tooltip.vue'
@@ -154,6 +156,57 @@ describe('Modal', () => {
 		await nextTick()
 		expect(document.activeElement).toBe(opener)
 		expect(document.body.style.overflow).toBe('')
+	})
+})
+
+describe('Popover', () => {
+	const mountPopover = () =>
+		mount(Popover, {
+			attachTo: document.body,
+			slots: {
+				trigger: ({ props }: { props: Record<string, unknown> }) => h('button', { ...props, id: 'trigger' }, 'Open'),
+				default: () => h('input', { autofocus: true }),
+			},
+		})
+
+	it('opens on trigger click, focuses [autofocus], Esc closes and refocuses the trigger', async () => {
+		const w = mountPopover()
+		await w.find('#trigger').trigger('click')
+		await nextTick()
+		const panel = w.find('[role="dialog"]')
+		expect(w.find('#trigger').attributes('aria-expanded')).toBe('true')
+		expect(w.find('#trigger').attributes('aria-controls')).toBe(panel.attributes('id'))
+		expect(document.activeElement).toBe(w.find('input').element)
+		await w.find('input').trigger('keydown', { key: 'Escape' })
+		expect(w.find('[role="dialog"]').exists()).toBe(false)
+		expect(document.activeElement).toBe(w.find('#trigger').element)
+		w.unmount()
+	})
+
+	it('closes on an outside pointerdown', async () => {
+		const w = mountPopover()
+		await w.find('#trigger').trigger('click')
+		document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }))
+		await nextTick()
+		expect(w.find('[role="dialog"]').exists()).toBe(false)
+		w.unmount()
+	})
+})
+
+describe('Dropdown', () => {
+	it('focuses the first item on open, arrows move, select closes and emits', async () => {
+		const items = [{ label: 'Edit' }, { label: 'Off', disabled: true }, { label: 'Delete' }]
+		const w = mount(Dropdown, { props: { items }, attachTo: document.body })
+		await w.find('[aria-haspopup="menu"]').trigger('click')
+		await nextTick()
+		const buttons = w.findAll('[role="menuitem"]')
+		expect(document.activeElement).toBe(buttons[0]!.element)
+		await w.find('[role="menu"]').trigger('keydown', { key: 'ArrowDown' })
+		expect(document.activeElement).toBe(buttons[2]!.element)
+		await buttons[2]!.trigger('click')
+		expect(w.emitted('select')).toEqual([[items[2]]])
+		expect(w.find('[role="menu"]').exists()).toBe(false)
+		w.unmount()
 	})
 })
 
