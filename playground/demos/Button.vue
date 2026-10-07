@@ -43,5 +43,6 @@ function fakeSave() {
 		<Button disabled>Disabled</Button>
 		<Button as="a" href="#Button">As link</Button>
 		<Button as="a" href="#Button" disabled>Disabled link</Button>
+		<Button to="/settings" variant="outline">Router link</Button>
 	</Variant>
 </template>

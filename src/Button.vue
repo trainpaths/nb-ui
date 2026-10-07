@@ -15,6 +15,8 @@ interface Props {
 	loading?: boolean
 	disabled?: boolean
 	as?: 'button' | 'a'
+	/** renders a `<router-link>` (needs vue-router) */
+	to?: string
 	/** full width */
 	block?: boolean
 	/** equal padding, for icon-only buttons (give them an aria-label) */
@@ -30,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 	loading: false,
 	disabled: false,
 	as: 'button',
+	to: undefined,
 	block: false,
 	square: false,
 })
@@ -70,16 +73,20 @@ const classes = computed(() => {
 })
 
 const isDisabled = computed(() => props.disabled || props.loading)
+const tag = computed(() => (props.to ? 'router-link' : props.as))
+const isButton = computed(() => tag.value === 'button')
 </script>
 
 <template>
 	<component
-		:is="as"
+		:is="tag"
+		:to="to"
 		:class="classes"
-		:disabled="as === 'button' ? isDisabled : undefined"
-		:aria-disabled="as === 'a' && isDisabled ? 'true' : undefined"
+		:disabled="isButton ? isDisabled : undefined"
+		:aria-disabled="!isButton && isDisabled ? 'true' : undefined"
+		:tabindex="!isButton && isDisabled ? -1 : undefined"
 		:aria-busy="loading ? 'true' : undefined"
-		:type="as === 'button' ? 'button' : undefined"
+		:type="isButton ? 'button' : undefined"
 	>
 		<!-- type="button" default: a fallthrough type="submit" overrides it -->
 		<!-- label stays in the layout (invisible) so the width doesn't jump while loading -->
