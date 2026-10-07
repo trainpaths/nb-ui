@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import CloseButton from './CloseButton.vue'
-import Icon, { type IconName } from './Icon.vue'
+import Icon from './Icon.vue'
+import { type Status, statusIcons } from './status'
 
 interface Props {
-	type?: 'success' | 'warning' | 'error' | 'info'
+	type?: Status
 	title?: string
 	dismissible?: boolean
 }
@@ -27,13 +28,6 @@ const typeClasses = {
 	info: { box: 'bg-accent/15 border-accent', icon: 'text-accent-dark' },
 }
 
-const icons: Record<NonNullable<Props['type']>, IconName> = {
-	success: 'check-circle',
-	warning: 'alert-triangle',
-	error: 'alert-circle',
-	info: 'info',
-}
-
 const classes = computed(
 	() => `flex items-start gap-10 rounded-md border-l-4 px-14 py-10 text-sm text-black ${typeClasses[props.type].box}`,
 )
@@ -48,7 +42,7 @@ const role = computed(() => (props.type === 'error' || props.type === 'warning' 
 		:role="role"
 	>
 		<Icon
-			:name="icons[type]"
+			:name="statusIcons[type]"
 			:size="18"
 			:class="['mt-1', typeClasses[type].icon]"
 		/>

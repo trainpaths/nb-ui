@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends string | number">
 import { useId } from 'vue'
+import { peerFocusRing } from './styles'
 import { useField } from './useField'
 
 export interface RadioOption<V = string | number> {
@@ -68,8 +69,11 @@ const normalize = (o: T | RadioOption<T>): RadioOption<T> =>
 				/>
 				<span
 					aria-hidden="true"
-					class="mt-2 flex size-16 shrink-0 items-center justify-center rounded-full border bg-white transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-dark"
-					:class="modelValue === o.value ? 'border-accent-dark' : field.invalid.value ? 'border-error' : 'border-gray-400'"
+					:class="[
+						'mt-2 flex size-16 shrink-0 items-center justify-center rounded-full border bg-white transition-colors',
+						peerFocusRing,
+						modelValue === o.value ? 'border-accent-dark' : field.invalid.value ? 'border-error' : 'border-gray-400',
+					]"
 				>
 					<span
 						class="size-8 rounded-full bg-accent-dark transition-transform motion-reduce:transition-none"

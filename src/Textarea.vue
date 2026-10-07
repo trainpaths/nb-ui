@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { inputFocus } from './styles'
+import { inputBorder, inputDisabled, inputFocus } from './styles'
 import { useControlAttrs, useField } from './useField'
 
 /** Multi-line Input. `autoResize` grows with the content; `counter` shows length / maxlength. */
@@ -37,8 +37,7 @@ const { root: rootAttrs, control: controlAttrs } = useControlAttrs()
 const el = ref<HTMLTextAreaElement | null>(null)
 
 const classes = computed(() => {
-	const border = field.invalid.value ? 'border-error' : 'border-gray-300'
-	return `block w-full rounded-md border bg-white px-12 py-6 text-sm text-black outline-hidden placeholder:text-black/40 ${border} ${inputFocus} ${props.autoResize ? 'resize-none overflow-hidden' : 'resize-y'} disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-70`
+	return `block w-full rounded-md border bg-white px-12 py-6 text-sm text-black outline-hidden placeholder:text-black/40 ${inputBorder(field.invalid.value)} ${inputFocus} ${props.autoResize ? 'resize-none overflow-hidden' : 'resize-y'} ${inputDisabled}`
 })
 
 function resize() {

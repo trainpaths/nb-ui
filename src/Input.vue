@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { type Color, borderColor, bgColor, textColor } from './colors'
-import { inputFocus } from './styles'
+import { inputBorder, inputFocus, inputFocusWithin, inputSizes } from './styles'
 import { useControlAttrs, useField } from './useField'
 
 interface Props {
@@ -40,11 +40,9 @@ const { root: rootAttrs, control: inputAttrs } = useControlAttrs()
 const slots = defineSlots<{ prefix?(): unknown; suffix?(): unknown }>()
 const field = useField(props)
 
-const sizeClasses = { sm: 'py-4 text-xs', md: 'py-6 text-sm', lg: 'py-8 text-base' }
-
 const borderClass = computed(() => {
-	if (field.invalid.value) return borderColor('error')
-	return props.border ? borderColor(props.border) : 'border-gray-300'
+	if (props.border && !field.invalid.value) return borderColor(props.border)
+	return inputBorder(field.invalid.value)
 })
 
 // with prefix/suffix the wrapper draws the frame and takes the focus ring
@@ -56,7 +54,7 @@ const frameClasses = computed(
 )
 
 const inputClasses = computed(() => {
-	const base = `w-full min-w-0 px-12 outline-hidden placeholder:text-black/40 ${sizeClasses[props.size]}`
+	const base = `w-full min-w-0 px-12 outline-hidden placeholder:text-black/40 ${inputSizes[props.size]}`
 	if (framed.value) return `${base} border-none bg-transparent`
 	return `${base} ${frameClasses.value} ${inputFocus} disabled:cursor-not-allowed`
 })
@@ -71,15 +69,12 @@ const onInput = (event: Event) => {
 	<div
 		v-if="framed"
 		v-bind="rootAttrs"
-		:class="[
-			frameClasses,
-			'flex items-center focus-within:border-accent-dark focus-within:ring-1 focus-within:ring-accent-dark',
-		]"
+		:class="[frameClasses, 'flex items-center', inputFocusWithin]"
 	>
 		<span
 			v-if="slots.prefix"
 			class="flex shrink-0 items-center pl-12 text-black/50"
-			:class="sizeClasses[size]"
+			:class="inputSizes[size]"
 		>
 			<slot name="prefix" />
 		</span>
@@ -98,7 +93,7 @@ const onInput = (event: Event) => {
 		<span
 			v-if="slots.suffix"
 			class="flex shrink-0 items-center pr-12 text-black/50"
-			:class="sizeClasses[size]"
+			:class="inputSizes[size]"
 		>
 			<slot name="suffix" />
 		</span>

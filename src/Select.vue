@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends string | number">
 import { computed } from 'vue'
 import Icon from './Icon.vue'
-import { inputFocus } from './styles'
+import { inputBorder, inputDisabled, inputFocus, inputSizes } from './styles'
 import { useControlAttrs, useField } from './useField'
 
 export interface SelectOption<V = string | number> {
@@ -43,12 +43,9 @@ const normalized = computed(() =>
 	props.options.map((o) => (typeof o === 'object' ? o : { value: o, label: String(o), disabled: false })),
 )
 
-const sizeClasses = { sm: 'py-4 text-xs', md: 'py-6 text-sm', lg: 'py-8 text-base' }
-
 const classes = computed(() => {
-	const border = field.invalid.value ? 'border-error' : 'border-gray-300'
 	const empty = props.modelValue === null || props.modelValue === '' ? 'text-black/40' : 'text-black'
-	return `w-full cursor-pointer appearance-none rounded-md border bg-white pl-12 pr-32 outline-hidden ${border} ${empty} ${inputFocus} ${sizeClasses[props.size]} disabled:cursor-not-allowed disabled:bg-gray-50 disabled:opacity-70`
+	return `w-full cursor-pointer appearance-none rounded-md border bg-white pl-12 pr-32 outline-hidden ${inputBorder(field.invalid.value)} ${empty} ${inputFocus} ${inputSizes[props.size]} ${inputDisabled}`
 })
 
 // <select> only yields strings: map back to the original (number) value
