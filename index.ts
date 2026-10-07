@@ -11,7 +11,7 @@ export { default as Loading } from './src/Loading.vue'
 export { default as Toast } from './src/Toast.vue'
 export { default as ToastContainer } from './src/ToastContainer.vue'
 export { useToast } from './src/useToast'
-export type { Color } from './src/colors'
+export { type Color, bgColor, borderColor, textColor, onColor } from './src/colors'
 export type { ToastType, ToastMessage } from './src/useToast'
 export { default as TagInput } from './src/TagInput.vue'
 export { default as UnsavedChangesDialog } from './src/UnsavedChangesDialog.vue'
@@ -21,8 +21,16 @@ export { default as CloseButton } from './src/CloseButton.vue'
 export { default as Spinner } from './src/Spinner.vue'
 export { default as Skeleton } from './src/Skeleton.vue'
 export { default as ProgressBar } from './src/ProgressBar.vue'
-export { useField, type FieldContext } from './src/useField'
-export { focusRing, inputFocus } from './src/styles'
+export { useField, useControlAttrs, type FieldContext } from './src/useField'
+export {
+	focusRing,
+	peerFocusRing,
+	inputFocus,
+	inputFocusWithin,
+	inputSizes,
+	inputBorder,
+	inputDisabled,
+} from './src/styles'
 export { default as Select, type SelectOption } from './src/Select.vue'
 export { default as Textarea } from './src/Textarea.vue'
 export { default as Checkbox } from './src/Checkbox.vue'
