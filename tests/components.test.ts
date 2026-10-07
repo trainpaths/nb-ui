@@ -8,6 +8,7 @@ import Icon from '../src/Icon.vue'
 import Input from '../src/Input.vue'
 import Modal from '../src/Modal.vue'
 import Tabs from '../src/Tabs.vue'
+import Tooltip from '../src/Tooltip.vue'
 
 describe('Button', () => {
 	it('defaults to accent with readable dark text', () => {
@@ -55,6 +56,27 @@ describe('FormField + Input', () => {
 		const w = mount(Input, { attrs: { name: 'slug', class: 'w-full' }, slots: { prefix: () => '/' } })
 		expect(w.find('input').attributes('name')).toBe('slug')
 		expect(w.classes()).toContain('w-full')
+	})
+
+	it('emits an empty string, not 0, when a number input is cleared', async () => {
+		const w = mount(Input, { props: { type: 'number', modelValue: 5 } })
+		await w.find('input').setValue('')
+		await w.find('input').setValue('7')
+		expect(w.emitted('update:modelValue')).toEqual([[''], [7]])
+	})
+})
+
+describe('Tooltip', () => {
+	it('adds its id to the child\'s aria-describedby and removes it on unmount', () => {
+		const w = mount(Tooltip, {
+			props: { text: 'Hint' },
+			slots: { default: () => h('button', { 'aria-describedby': 'field-msg' }) },
+		})
+		const tip = w.find('[role="tooltip"]').attributes('id')
+		expect(w.find('button').attributes('aria-describedby')).toBe(`field-msg ${tip}`)
+		const button = w.find('button').element
+		w.unmount()
+		expect(button.getAttribute('aria-describedby')).toBe('field-msg')
 	})
 })
 

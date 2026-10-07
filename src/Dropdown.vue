@@ -138,8 +138,8 @@ const triggerProps = computed(() => ({
 				@keydown="onMenuKeydown"
 			>
 				<template
-					v-for="item in items"
-					:key="item.label"
+					v-for="(item, i) in items"
+					:key="`${i}-${item.label}`"
 				>
 					<hr
 						v-if="item.divider"

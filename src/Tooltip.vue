@@ -29,12 +29,23 @@ function onKeydown(e: KeyboardEvent) {
 	if (e.key === 'Escape' && visible.value) hide()
 }
 
+// keep ids already on the child (e.g. a FormField hint)
+function describe(add: boolean) {
+	const el = root.value?.firstElementChild
+	if (!el) return
+	const ids = (el.getAttribute('aria-describedby') ?? '').split(' ').filter((id) => id && id !== tipId)
+	if (add) ids.push(tipId)
+	if (ids.length) el.setAttribute('aria-describedby', ids.join(' '))
+	else el.removeAttribute('aria-describedby')
+}
+
 onMounted(() => {
-	root.value?.firstElementChild?.setAttribute('aria-describedby', tipId)
+	describe(true)
 	document.addEventListener('keydown', onKeydown)
 })
 onBeforeUnmount(() => {
 	clearTimeout(timer)
+	describe(false)
 	document.removeEventListener('keydown', onKeydown)
 })
 
