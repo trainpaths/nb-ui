@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 import type { ToastType } from './useToast'
 import CloseButton from './CloseButton.vue'
-import Icon, { type IconName } from './Icon.vue'
+import Icon from './Icon.vue'
+import { statusIcons } from './status'
 
 interface Props {
 	message: string
@@ -24,13 +25,6 @@ const colorMap: Record<ToastType, string> = {
 	info: 'bg-accent text-black',
 }
 
-const iconMap: Record<ToastType, IconName> = {
-	success: 'check-circle',
-	warning: 'alert-triangle',
-	error: 'alert-circle',
-	info: 'info',
-}
-
 // fixed width: the leave animation takes it out of flow (absolute), which must not resize it
 const classes = computed(
 	() =>
@@ -44,7 +38,7 @@ const classes = computed(
 		:role="type === 'error' ? 'alert' : 'status'"
 	>
 		<Icon
-			:name="iconMap[type]"
+			:name="statusIcons[type]"
 			:size="18"
 			class="mt-1"
 		/>

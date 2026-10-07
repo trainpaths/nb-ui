@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Icon from './Icon.vue'
+import { peerFocusRing } from './styles'
 import { useField } from './useField'
 
 /**
@@ -47,7 +48,7 @@ const boxClasses = computed(() => {
 	const filled = checked.value || props.indeterminate
 	const state = filled ? 'border-accent-dark bg-accent-dark text-white' : 'bg-white text-transparent'
 	const border = field.invalid.value && !filled ? 'border-error' : filled ? '' : 'border-gray-400'
-	return `mt-2 flex size-16 shrink-0 items-center justify-center rounded-sm border transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent-dark ${state} ${border}`
+	return `mt-2 flex size-16 shrink-0 items-center justify-center rounded-sm border transition-colors ${peerFocusRing} ${state} ${border}`
 })
 </script>
 

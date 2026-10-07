@@ -1,6 +1,7 @@
 import { ref } from 'vue'
+import type { Status } from './status'
 
-export type ToastType = 'success' | 'warning' | 'error' | 'info'
+export type ToastType = Status
 
 export interface ToastMessage {
 	id: string
