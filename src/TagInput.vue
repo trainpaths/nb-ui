@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, useId } from 'vue'
 import CloseButton from './CloseButton.vue'
 
 /**
@@ -37,7 +37,7 @@ const text = ref('')
 const open = ref(false)
 const highlighted = ref(-1)
 const input = ref<HTMLInputElement | null>(null)
-const listId = `tag-list-${Math.random().toString(36).slice(2, 8)}`
+const listId = `tag-list-${useId()}`
 
 const full = computed(() => props.modelValue.length >= props.max)
 const matches = computed(() => {
