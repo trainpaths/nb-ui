@@ -31,6 +31,7 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
   so their utilities are silently missing.
 - `playground/` dev-only showcase (`pnpm dev`): `demos/<Name>.vue` auto-globbed into sections, `Variant.vue` rows,
   theme colour pickers set CSS vars on `<html>`. Memory router so `Link to=` works and `#anchors` stay free.
+  Deployed to GitHub Pages on push to `main` (`.github/workflows/pages.yml`, built with `--base=/nb-ui/`).
 - Style: tabs, `<script setup lang="ts">`, spacing utilities are px (`p-16`), colours via theme token names.
   Comments: almost none, only for really unclear logic, terse caveman style.
 - Release: automatic on push to `main` (`.github/workflows/release.yml`): Conventional Commits since last tag → bump
