@@ -78,7 +78,7 @@ async function remove() {
 | Feedback | `Alert`, `Toast`, `ToastContainer` + `useToast()`, `Spinner`, `Loading`, `Skeleton`, `ProgressBar` |
 | Display | `Card`, `Badge`, `Avatar`, `Tabs`, `Accordion`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
 
-Every component with all its props: clone the repo and run `pnpm dev`.
+Every component with all its props: [live playground](https://trainpaths.github.io/nb-ui/), or clone the repo and run `pnpm dev`.
 
 ## Theming
 
