@@ -37,6 +37,8 @@ export type IconName =
 	| 'grip'
 	| 'eye'
 	| 'external-link'
+	| 'globe'
+	| 'globe-slash'
 	| 'arrow'
 	| 'panel'
 
@@ -128,6 +130,9 @@ const paths: Record<IconName, IconPath[]> = {
 		'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
 	],
 	'external-link': ['M15 3h6v6', 'M10 14 21 3', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'],
+	globe: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20', 'M2 12h20'],
+	// globe crossed out (unpublish)
+	'globe-slash': ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20', 'M2 12h20', 'm2 2 20 20'],
 	arrow: ['M19 12H5', 'm12 19-7-7 7-7'],
 	// sidebar on the left; rotate 180 = right
 	panel: ['M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z', 'M9 3v18'],
