@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Button, Dropdown, Icon, type DropdownItem } from '../../index'
+import { Button, Dropdown, Flag, Icon, type DropdownItem } from '../../index'
 import Info from '../Info.vue'
 import Variant from '../Variant.vue'
 
 const last = ref('')
+const language = ref('en')
+const languages = ['en', 'de', 'it', 'fr'].map((code) => ({ label: code, onSelect: () => (language.value = code) }))
 const items: DropdownItem[] = [
 	{ label: 'Edit', icon: 'plus' },
 	{ label: 'Duplicate' },
@@ -29,5 +31,15 @@ const items: DropdownItem[] = [
 			</template>
 		</Dropdown>
 		<Info>selected: {{ last }}</Info>
+	</Variant>
+	<Variant label="#item slot + placement auto (opens above when there's no room below)">
+		<Dropdown :items="languages" placement="auto" label="Language">
+			<template #trigger="{ props }">
+				<Button variant="ghost" size="sm" v-bind="props"><Flag :code="language" />{{ language.toUpperCase() }}</Button>
+			</template>
+			<template #item="{ item }">
+				<Flag :code="item.label" />{{ item.label.toUpperCase() }}
+			</template>
+		</Dropdown>
 	</Variant>
 </template>

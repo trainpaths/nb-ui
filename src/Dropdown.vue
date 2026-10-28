@@ -17,12 +17,13 @@ export interface DropdownItem {
 
 /**
  * Action menu on a Popover. Custom trigger: `<template #trigger="{ props }"><Button v-bind="props">…</Button></template>`
- * (spreads aria + handlers). Absolutely positioned under the trigger, so an `overflow: hidden` ancestor clips it.
+ * (spreads aria + handlers). `#item="{ item }"` replaces an item's icon + label. Absolutely positioned (`placement` as
+ * on Popover), so an `overflow: hidden` ancestor clips it.
  */
-withDefaults(defineProps<{ items: DropdownItem[]; align?: 'start' | 'end'; label?: string }>(), {
-	align: 'start',
-	label: 'Actions',
-})
+withDefaults(
+	defineProps<{ items: DropdownItem[]; align?: 'start' | 'end'; placement?: 'bottom' | 'top' | 'auto'; label?: string }>(),
+	{ align: 'start', placement: 'bottom', label: 'Actions' },
+)
 
 const emit = defineEmits<{ select: [item: DropdownItem] }>()
 
@@ -81,6 +82,7 @@ function triggerProps(popover: Record<string, unknown> & { onClick: () => void }
 		role="menu"
 		padding="sm"
 		:align="align"
+		:placement="placement"
 		:label="label"
 		class="flex min-w-160 flex-col"
 		@keydown="onMenuKeydown"
@@ -123,11 +125,16 @@ function triggerProps(popover: Record<string, unknown> & { onClick: () => void }
 					]"
 					@click="select(item, close)"
 				>
-					<Icon
-						v-if="item.icon"
-						:name="item.icon"
-					/>
-					{{ item.label }}
+					<slot
+						name="item"
+						:item="item"
+					>
+						<Icon
+							v-if="item.icon"
+							:name="item.icon"
+						/>
+						{{ item.label }}
+					</slot>
 				</button>
 			</template>
 		</template>

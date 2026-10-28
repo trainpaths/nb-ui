@@ -22,7 +22,11 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
 - Global hosts: `ToastContainer` (`useToast`) and `ConfirmDialog` (`useConfirm`) hold module-level state, mounted once by the app.
 - Overlays: `Modal` (Teleport, focus trap/restore, `inheritAttrs: false` → attrs on the panel); `UnsavedChangesDialog`
   and `ConfirmDialog` are built on it. `Popover` (trigger slot props, Esc/outside click/focus-out close); `Dropdown` is built on it.
-  `Popover`/`Dropdown`/`Tooltip` position absolutely (no floating-ui): clipped by `overflow: hidden`.
+  `Popover`/`Dropdown`/`Tooltip` position absolutely (no floating-ui): clipped by `overflow: hidden`. Popover
+  `placement="auto"` measures on open (trigger rect vs viewport, panel `offsetHeight`) and flips above; Dropdown passes
+  `placement` through and has an `#item` slot.
+- `Flag.vue` multi-colour language flags (not in `Icon`: those are single-colour strokes); codes in `flags.ts`
+  (`flagOf` takes a code or tag). Union Jack's clipPath id comes from `useId()` (several flags per page).
 - Animations use Tailwind classes on `<Transition>`/`<TransitionGroup>` props, always with `motion-reduce:transition-none`.
   Tailwind v4 `translate-*`/`scale-*` set the CSS `translate`/`scale` properties, not `transform`.
 - Tests: `tests/*.test.ts`, Vitest + @vue/test-utils + happy-dom (`vitest.config.ts`, separate from the playground's
