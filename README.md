@@ -76,7 +76,7 @@ async function remove() {
 | Forms | `Form`, `FormField`, `Input`, `Select`, `Textarea`, `Checkbox`, `Switch`, `RadioGroup`, `TagInput` |
 | Overlays | `Modal`, `ConfirmDialog` + `useConfirm()`, `UnsavedChangesDialog` + `useUnsavedChanges()`, `Popover`, `Dropdown`, `Tooltip` |
 | Feedback | `Alert`, `Toast`, `ToastContainer` + `useToast()`, `Spinner`, `Loading`, `Skeleton`, `ProgressBar` |
-| Display | `Card`, `Badge`, `Avatar`, `Tabs`, `Accordion`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
+| Display | `Card`, `Badge`, `Avatar`, `Flag` (language flags: en (UK), de, it, fr), `Tabs`, `Accordion`, `Table`, `Pagination`, `EmptyState`, `DescriptionList`, `DescriptionItem` |
 
 Every component with all its props: [live playground](https://trainpaths.github.io/nb-ui/), or clone the repo and run `pnpm dev`.
 
@@ -115,6 +115,7 @@ Good to know:
 - `theme.css` sets `--spacing: 1px`, so all spacing utilities in your app are px (`p-16` = 16px).
 - Font is self-hosted Roboto. Change it with `--font-sans` in your `@theme`.
 - `Popover`, `Dropdown` and `Tooltip` are absolutely positioned, so an `overflow: hidden` ancestor clips them.
+  `Popover`/`Dropdown` `placement="auto"` opens above the trigger when the viewport has no room below.
 
 ## Overriding a component
 

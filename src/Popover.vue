@@ -7,12 +7,13 @@ defineOptions({ inheritAttrs: false })
 /**
  * Click-to-open floating panel. Trigger: `<template #trigger="{ props }"><Button v-bind="props">…</Button></template>`.
  * Closes on Esc, outside click or focus leaving it; the default slot gets `close`. Optional `v-model:open`.
- * Absolutely positioned, so an `overflow: hidden` ancestor clips it.
+ * Absolutely positioned, so an `overflow: hidden` ancestor clips it. `placement="auto"`: below, above when the viewport
+ * has no room below (measured on open).
  */
 const props = withDefaults(
 	defineProps<{
 		align?: 'start' | 'end'
-		placement?: 'bottom' | 'top'
+		placement?: 'bottom' | 'top' | 'auto'
 		padding?: 'none' | 'sm' | 'md'
 		/** aria-label of the panel */
 		label?: string
@@ -29,6 +30,8 @@ const root = ref<HTMLElement | null>(null)
 const panel = ref<HTMLElement | null>(null)
 const autoId = `popover-${useId()}`
 const panelId = computed(() => props.id ?? autoId)
+
+const side = ref<'bottom' | 'top'>('bottom')
 
 const paddings = { none: '', sm: 'p-4', md: 'p-12' }
 
@@ -54,6 +57,12 @@ function onFocusout(e: FocusEvent) {
 	if (open.value && to && !root.value?.contains(to)) close(false)
 }
 
+function fitsBelow() {
+	const rect = root.value!.getBoundingClientRect()
+	const below = window.innerHeight - rect.bottom
+	return below >= (panel.value?.offsetHeight ?? 0) + 8 || below >= rect.top
+}
+
 function onOutside(e: PointerEvent) {
 	if (!root.value?.contains(e.target as Node)) close(false)
 }
@@ -63,7 +72,9 @@ watch(
 	async (o) => {
 		if (!o) return document.removeEventListener('pointerdown', onOutside)
 		document.addEventListener('pointerdown', onOutside)
+		side.value = 'bottom'
 		await nextTick()
+		if (props.placement === 'auto') side.value = fitsBelow() ? 'bottom' : 'top'
 		if (panel.value?.contains(document.activeElement)) return
 		;(panel.value?.querySelector<HTMLElement>('[autofocus]') ?? panel.value)?.focus()
 	},
@@ -107,7 +118,7 @@ const triggerProps = computed(() => ({
 				:class="[
 					'absolute z-40 rounded-md border border-gray-200 bg-white font-sans shadow-lg outline-hidden',
 					paddings[padding],
-					positions[placement][align],
+					positions[placement === 'auto' ? side : placement][align],
 				]"
 				v-bind="$attrs"
 			>

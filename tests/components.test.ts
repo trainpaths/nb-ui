@@ -1,10 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent, h, nextTick, ref } from 'vue'
 import Accordion from '../src/Accordion.vue'
 import Button from '../src/Button.vue'
 import Checkbox from '../src/Checkbox.vue'
 import Dropdown from '../src/Dropdown.vue'
+import Flag from '../src/Flag.vue'
 import FormField from '../src/FormField.vue'
 import Icon from '../src/Icon.vue'
 import Input from '../src/Input.vue'
@@ -209,6 +210,27 @@ describe('Popover', () => {
 		w.unmount()
 	})
 
+	it('placement auto opens above when the viewport has no room below', async () => {
+		const w = mount(Popover, {
+			props: { placement: 'auto' },
+			attachTo: document.body,
+			slots: { trigger: ({ props }: { props: Record<string, unknown> }) => h('button', { ...props, id: 'trigger' }, 'Open') },
+		})
+		const rect = (top: number) => ({ top, bottom: top + 30, left: 0, right: 0, width: 0, height: 30, x: 0, y: top, toJSON: () => ({}) })
+		const height = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(200)
+		const spy = vi.spyOn(w.element as HTMLElement, 'getBoundingClientRect').mockReturnValue(rect(window.innerHeight - 40))
+		await w.find('#trigger').trigger('click')
+		await nextTick()
+		expect(w.find('[role="dialog"]').classes()).toContain('bottom-full')
+		await w.find('#trigger').trigger('click')
+		spy.mockReturnValue(rect(10))
+		await w.find('#trigger').trigger('click')
+		await nextTick()
+		expect(w.find('[role="dialog"]').classes()).toContain('top-full')
+		height.mockRestore()
+		w.unmount()
+	})
+
 	it('closes on an outside pointerdown', async () => {
 		const w = mountPopover()
 		await w.find('#trigger').trigger('click')
@@ -233,6 +255,14 @@ describe('Dropdown', () => {
 		expect(w.emitted('select')).toEqual([[items[2]]])
 		expect(w.find('[role="menu"]').exists()).toBe(false)
 		w.unmount()
+	})
+})
+
+describe('Flag', () => {
+	it('draws known languages by code or tag, nothing for others', () => {
+		expect(mount(Flag, { props: { code: 'de-CH' } }).find('svg').exists()).toBe(true)
+		expect(mount(Flag, { props: { code: 'en' } }).find('clipPath').exists()).toBe(true)
+		expect(mount(Flag, { props: { code: 'xx' } }).find('svg').exists()).toBe(false)
 	})
 })
 
