@@ -43,6 +43,8 @@ Mount the global hosts once, e.g. in `App.vue`, for `useToast()` and `useConfirm
 </template>
 ```
 
+`<ToastContainer position="bottom-16 right-16" />` moves the stack (fixed-position classes, default `top-16 right-16`).
+
 ## Usage
 
 ```vue

@@ -20,6 +20,7 @@ Vue 3 + Tailwind v4 component library, installed by apps from git tags (`github:
   when the root is a wrapper div), `scrollLock.ts` (shared Modal counter).
 - Colour rule: `accent` is too light for text → text/rings/hover use `accent-dark`; light fills get black text (`onColor`).
 - Global hosts: `ToastContainer` (`useToast`) and `ConfirmDialog` (`useConfirm`) hold module-level state, mounted once by the app.
+  `ToastContainer` `position` = fixed-position classes (default `top-16 right-16`).
 - Overlays: `Modal` (Teleport, focus trap/restore, `inheritAttrs: false` → attrs on the panel); `UnsavedChangesDialog`
   and `ConfirmDialog` are built on it. `Popover` (trigger slot props, Esc/outside click/focus-out close); `Dropdown` is built on it.
   `Popover`/`Dropdown`/`Tooltip` position absolutely (no floating-ui): clipped by `overflow: hidden`. Popover

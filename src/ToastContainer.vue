@@ -2,6 +2,14 @@
 import { useToast } from './useToast'
 import Toast from './Toast.vue'
 
+withDefaults(
+	defineProps<{
+		/** fixed-position classes of the stack; toasts slide in from the right, keep it right-anchored */
+		position?: string
+	}>(),
+	{ position: 'top-16 right-16' },
+)
+
 const { toasts, dismiss, pause, resume } = useToast()
 
 // absolute flex children lose their slot: pin the leaving toast where it was
@@ -16,7 +24,8 @@ function pin(el: Element) {
 		<!-- slide in from / out to the right; leaving toast goes absolute so the rest glide into its place -->
 		<TransitionGroup
 			tag="div"
-			class="pointer-events-none fixed top-16 right-16 z-50 flex flex-col items-end gap-8 font-sans"
+			class="pointer-events-none fixed z-50 flex flex-col items-end gap-8 font-sans"
+			:class="position"
 			enter-active-class="transition duration-300 ease-out motion-reduce:transition-none"
 			enter-from-class="translate-x-[calc(100%+16px)] opacity-0"
 			leave-active-class="absolute right-0 transition duration-200 ease-in motion-reduce:transition-none"
